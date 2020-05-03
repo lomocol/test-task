@@ -31,7 +31,7 @@ bool GameScene::init()
 	createHeader();
 	createPlayer();
 	addListeners();
-
+	startIcicling();
 	return true;
 }
 
@@ -117,4 +117,10 @@ void GameScene::addListeners()
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+}
+
+void GameScene::startIcicling()
+{
+	icicleSpawner = new IcicleSpawner(arena);
+	icicleSpawner->startSpawn();
 }
