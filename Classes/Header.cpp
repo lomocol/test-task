@@ -10,22 +10,16 @@ Header::Header(cocos2d::Node* _parent)
 	headerSize = parent->getContentSize();
 	setBackground();
 	createBars();
-	return;
-	
-
-	
-
-
 }
 
 void Header::changeHealth(float newHealth)
 {
-	healthBar->runAction(ProgressTo::create(0.3f, newHealth));
+	healthBar->runAction(ProgressTo::create(0.5f, newHealth));
 }
 
 void Header::changeProtection(float newProtection)
 {
-	protectionBar->runAction(ProgressTo::create(0.3f, newProtection));
+	protectionBar->runAction(ProgressTo::create(0.5f, newProtection));
 }
 
 
@@ -41,7 +35,7 @@ void Header::createBars()
 	healthBar->setDirection(LoadingBar::Direction::LEFT);
 	healthBar->setAnchorPoint({ 0,0 });
 	healthBar->setPosition({ 20,20 });
-	healthBar->runAction(ProgressTo::create(3.0f, 100.0f));
+	//healthBar->runAction(ProgressTo::create(3.0f, 100.0f));
 	parent->addChild(healthBar);
 
 	protectionBar = LoadingBar::create("bar.png");
@@ -49,7 +43,7 @@ void Header::createBars()
 	protectionBar->setDirection(LoadingBar::Direction::LEFT);
 	protectionBar->setAnchorPoint({ 0,0 });
 	protectionBar->setPosition({ 20,100 });
-	protectionBar->runAction(ProgressTo::create(3.0f, 100.0f));
+	//protectionBar->runAction(ProgressTo::create(3.0f, 100.0f));
 	parent->addChild(protectionBar);
 }
 

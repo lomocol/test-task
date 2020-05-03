@@ -28,12 +28,19 @@ bool GameScene::init()
 	origin = Director::getInstance()->getVisibleOrigin();
 
 	createGameSurface();
-
+	createHeader();
+	createPlayer();
 	return true;
 }
 
 void GameScene::createHeader()
 {
+	auto headerNode = Node::create();
+	headerNode->setContentSize(Size(visibleSize.width,HEADER_HEIGHT));
+	headerNode->setAnchorPoint(Point(0,0));
+	headerNode->setPosition(origin.x,origin.y + visibleSize.height - HEADER_HEIGHT);
+	this->addChild(headerNode);
+	header = new Header(headerNode);
 }
 
 void GameScene::createGameSurface()
@@ -74,6 +81,7 @@ void GameScene::createGameSurface()
 	// Create arena
 	arena = Node::create();
 	arena->setAnchorPoint(Point(0, 0));
+	arena->setContentSize(arenaSize);
 	arena->setPosition(-(edgeSize.width / 2), footerSize.height - edgeSize.height / 2);
 
 	// Create background
@@ -90,4 +98,9 @@ void GameScene::createGameSurface()
 
 	this->addChild(edgeNode);
 	
+}
+
+void GameScene::createPlayer()
+{
+	player = new Player(arena,header);
 }
