@@ -14,11 +14,14 @@ public:
 
 	CREATE_FUNC(GameScene);
 
+	bool onContactBegin(cocos2d::PhysicsContact& contact);
 private:
 	void setPhysicsWorld(cocos2d::PhysicsWorld* _world) { world = _world; };
 	void createHeader();
 	void createGameSurface();
 	void createPlayer();
+	void addListeners();
+
 private:
 	Header* header;
 	Player* player;

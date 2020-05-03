@@ -30,6 +30,13 @@ bool GameScene::init()
 	createGameSurface();
 	createHeader();
 	createPlayer();
+	addListeners();
+
+	return true;
+}
+
+bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
+{
 	return true;
 }
 
@@ -53,7 +60,7 @@ void GameScene::createGameSurface()
 	// Create edgeBox
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(visibleSize.width / 2 + origin.x, (visibleSize.height - HEADER_HEIGHT) / 2 + origin.y);
-	auto edgeBody = PhysicsBody::createEdgeBox(edgeSize, PhysicsMaterial(0, 1, 0), 5);
+	auto edgeBody = PhysicsBody::createEdgeBox(edgeSize, PHYSICSBODY_MATERIAL_DEFAULT, 5);
 	edgeBody->setCollisionBitmask(EDGE_MASK);
 	edgeBody->setContactTestBitmask(true);
 	edgeNode->setPhysicsBody(edgeBody);
@@ -103,4 +110,11 @@ void GameScene::createGameSurface()
 void GameScene::createPlayer()
 {
 	player = new Player(arena,header);
+}
+
+void GameScene::addListeners()
+{
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }

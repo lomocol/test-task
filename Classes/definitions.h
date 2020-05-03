@@ -1,0 +1,10 @@
+#pragma once
+
+#define NORMAL_GRAVITY Vec2(0,-50)
+#define HEADER_HEIGHT 160
+
+
+#define PLAYER_MASK 1001
+#define EDGE_MASK 1100
+#define FOOTER_MASK 1101
+#define CEILING_MASK 1102
