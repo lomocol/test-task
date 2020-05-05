@@ -27,11 +27,15 @@ bool GameScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
+
+
 	createGameSurface();
 	createHeader();
 	createPlayer();
 	addListeners();
-	startIcicling();
+	initManagers();
+	startIcicleSpawn();
+
 	return true;
 }
 
@@ -43,9 +47,9 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 void GameScene::createHeader()
 {
 	auto headerNode = Node::create();
-	headerNode->setContentSize(Size(visibleSize.width,HEADER_HEIGHT));
-	headerNode->setAnchorPoint(Point(0,0));
-	headerNode->setPosition(origin.x,origin.y + visibleSize.height - HEADER_HEIGHT);
+	headerNode->setContentSize(Size(visibleSize.width, HEADER_HEIGHT));
+	headerNode->setAnchorPoint(Point(0, 0));
+	headerNode->setPosition(origin.x, origin.y + visibleSize.height - HEADER_HEIGHT);
 	this->addChild(headerNode);
 	header = new Header(headerNode);
 }
@@ -104,12 +108,15 @@ void GameScene::createGameSurface()
 	edgeNode->addChild(arena);
 
 	this->addChild(edgeNode);
-	
+
 }
 
 void GameScene::createPlayer()
 {
-	player = new Player(arena,header);
+	ImageManager::instance().addTexture(PLAYER_IMAGE,PLAYER_SIZE);
+
+	Vec2 position(visibleSize.width / 2, visibleSize.height / 2);
+	player = new Player(PLAYER_IMAGE, arena, header, position, PLAYER_MASK);
 }
 
 void GameScene::addListeners()
@@ -119,8 +126,20 @@ void GameScene::addListeners()
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
-void GameScene::startIcicling()
+void GameScene::startIcicleSpawn()
 {
-	icicleSpawner = new IcicleSpawner(arena);
 	icicleSpawner->startSpawn();
+}
+
+void GameScene::startSpiderSpawn()
+{
+	spiderSpawner->startSpawn();
+}
+
+void GameScene::initManagers()
+{
+	columnManager = new ColumnManager(arena, COLUMN_COUNT);
+
+	icicleSpawner = new IcicleSpawner(arena, columnManager, MAX_ICICLE_COUNT_FROM);
+	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_ICICLE_COUNT_FROM);
 }

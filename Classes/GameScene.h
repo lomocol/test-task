@@ -4,7 +4,8 @@
 #include "definitions.h"
 #include "Header.h"
 #include "Player.h"
-#include "IcicleSpawner.h"
+#include "icicleSpawner.h"
+#include "spiderSpawner.h"
 
 class GameScene : public cocos2d::Scene
 {
@@ -22,9 +23,13 @@ private:
 	void createGameSurface();
 	void createPlayer();
 	void addListeners();
-	void startIcicling();
+	void startIcicleSpawn();
+	void startSpiderSpawn();
+	void initManagers();
 private:
 	IcicleSpawner* icicleSpawner;
+	SpiderSpawner* spiderSpawner;
+	ColumnManager* columnManager;
 	Header* header;
 	Player* player;
 	cocos2d::PhysicsWorld* world;
