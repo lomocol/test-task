@@ -1,54 +1,48 @@
-#include "IcicleSpawner.h"
+#include "icicleSpawner.h"
 
 using namespace std;
 using namespace cocos2d;
 
-IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent)
+
+IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount) :
+	iSpawner(_parent, columnManager, maxMonsterCount)
 {
-	parent = _parent;
-	arenaSize = parent->getContentSize();
+	 spawnInterval = ICICLE_SPAWN_INTERVAL;
+	 appearanceTime = ICICLE_APPEARANCE_TIME;
+	 columnReleaseTime = ICICLE_COLUMN_RELEASE_TIME;
 }
 
 void IcicleSpawner::startSpawn()
 {
-	int max_icicle_count = 10;
-	icicles.assign(max_icicle_count, nullptr);
-
-	spawner = Sprite::create();
-	auto callback = CallFunc::create([this]() {this->spawnIcicle();});
-	auto sequense = Sequence::create(callback, nullptr);
-
-	parent->addChild(spawner);
-	spawner->runAction(sequense);
+	auto spawnCallFunc = CallFunc::create([this]() {this->spawn();});
+	spawner->runAction(spawnCallFunc);
 }
 
-void IcicleSpawner::spawnIcicle()
+
+
+void IcicleSpawner::spawn()
 {
 
-	int num = -1;
-	for (int i = 0; i < icicles.size(); i++)
-		if (icicles[i] == nullptr)
-		{
-			num = i;
-			break;
-		}
+	int spriteNumber = getFreeMonsterNumber();
 
-	if (num != -1)
+	if (spriteNumber != -1)
 	{
-		Icicle* ice = new Icicle(Vec2(2, 2), num + 1);
-		auto ice_sprite = ice->getSprite();
-		int x = rand() % static_cast<int>(arenaSize.width - ice_sprite->getContentSize().width / 2) + ice_sprite->getContentSize().width / 2;
-		ice_sprite->setPosition(x, arenaSize.height - 10 - ice_sprite->getContentSize().height / 2);
+		Column freeColumn = columnManager->getFreeColumn();
+		if (freeColumn.number != -1)
+		{
+			Vec2 position(freeColumn.centerPosition, spawnYPosition);
+			Icicle* icicle = new Icicle(ICICLE_IMAGE, parent, position, ICICLE_MASK + spriteNumber);
 
-		parent->addChild(ice_sprite);
-		ice->fall();
-		icicles[num] = ice;
+			icicle->appearance(appearanceTime);
+
+			monsters[spriteNumber] = icicle;
+			columnManager->releaseColumnAfter(freeColumn.number, appearanceTime + columnReleaseTime);
+		}
 	}
 
-
-	auto delay = DelayTime::create(0.55);
-	auto callback = CallFunc::create([this]() {this->spawnIcicle();});
-
-	auto sequense = Sequence::create(delay, callback, nullptr);
+	auto delay = DelayTime::create(spawnInterval);
+	auto spawnCallFunc = CallFunc::create([this]() {this->spawn();});
+	auto sequense = Sequence::create(delay, spawnCallFunc, nullptr);
 	spawner->runAction(sequense);
 }
+

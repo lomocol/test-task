@@ -3,29 +3,45 @@
 using namespace cocos2d;
 using namespace std;
 
-Player::Player(cocos2d::Node* _parent, Header* _header)
+Player::Player(const std::string & filename, cocos2d::Node* _parent, Header* _header, cocos2d::Vec2 position, int mask) :
+	iMonster(filename,_parent, position,mask)
 {
-	parent = _parent;
 	header = _header;
 
 	health = 100;
 	protection = 100;
-	
+
 	synchronizeHealth();
 	synchronizeProtection();
-	
-	auto arenaSize = parent->getContentSize();
-	sprite = Sprite::create("player.png");
+
 	sprite->setAnchorPoint(Point(0.5, 0));
-	sprite->setPosition(arenaSize.width / 2, 10);
-	auto spriteBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PhysicsMaterial(0, 1, 0));
-	spriteBody->setCollisionBitmask(PLAYER_MASK);
-	spriteBody->setContactTestBitmask(true);
-	sprite->setPhysicsBody(spriteBody);
-	
-	parent->addChild(sprite);
+	sprite->setPosition(position);
+	sprite->getPhysicsBody()->setDynamic(true);
 
 	addListeners();
+}
+
+void Player::die()
+{
+}
+
+void Player::appearance(float time)
+{
+}
+
+void Player::causeDomage(float domage)
+{
+	if (protection < domage)
+	{
+		domage -= protection;
+		protection = 0;
+		synchronizeHealth();
+		changeHealth(-domage);
+	}
+	else
+		protection -= domage;
+
+	synchronizeProtection();
 }
 
 void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
@@ -35,20 +51,21 @@ void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
 		sprite->getPhysicsBody()->applyImpulse(Vec2(0, 100));
 	}
 	else
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-	{
-		sprite->getPhysicsBody()->applyImpulse(Vec2(-100, 0));
-	}
-	else
-	if (keyCode == EventKeyboard::KeyCode::KEY_D)
-	{
-		sprite->getPhysicsBody()->applyImpulse(Vec2(100, 0));
-	}
-	else
-	if (keyCode == EventKeyboard::KeyCode::KEY_S)
-	{
-		sprite->getPhysicsBody()->applyImpulse(Vec2(0, -100));
-	}
+		if (keyCode == EventKeyboard::KeyCode::KEY_A)
+		{
+			sprite->getPhysicsBody()->applyImpulse(Vec2(-100, 0));
+		}
+		else
+			if (keyCode == EventKeyboard::KeyCode::KEY_D)
+			{
+				sprite->getPhysicsBody()->applyImpulse(Vec2(100, 0));
+			}
+			else
+				if (keyCode == EventKeyboard::KeyCode::KEY_S)
+				{
+					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -100));
+				}
+
 }
 
 void Player::addListeners()

@@ -3,22 +3,13 @@
 using namespace std;
 using namespace cocos2d;
 
-Icicle::Icicle( cocos2d::Node * _parent,cocos2d::Vec2 position,int mask):parent(_parent)
+Icicle::Icicle(const std::string& filename,cocos2d::Node* _parent, cocos2d::Vec2 position, int mask) :
+	iMonster(filename,_parent, position, mask)
 {
-	sprite = Sprite::createWithTexture(ImageManager::instance().getTexture("icicle1.png"));
-	sprite->setPosition(position);
-	sprite->setAnchorPoint(Point(0.5f,1.0f));
-
-	auto spriteBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PhysicsMaterial(0, 1, 0));
-	spriteBody->setCollisionBitmask(mask);
-	spriteBody->setContactTestBitmask(true);
-	spriteBody->setDynamic(false);
-
-	sprite->setPhysicsBody(spriteBody);
-	parent->addChild(sprite);
+	
 }
 
-void Icicle::growingUp(float time)
+void Icicle::appearance(float time)
 {
 	auto stageInterval = DelayTime::create(time / 3);
 
@@ -30,7 +21,7 @@ void Icicle::growingUp(float time)
 	sprite->runAction(sequence);
 }
 
-void Icicle::destroy()
+void Icicle::die()
 {
 	if (sprite == nullptr)
 		return;
@@ -51,11 +42,11 @@ void Icicle::destroy()
 
 void Icicle::firstStage()
 {
-	auto texture = ImageManager::instance().getTexture("icicle1.png");
+	auto texture = ImageManager::instance().getTexture("icicle.png");
 	auto newSize = texture->getContentSize();
 	sprite->setTexture(texture);
 	sprite->setContentSize(newSize);
-	auto spriteBody = PhysicsBody::createCircle(newSize.width / 2, PhysicsMaterial(0,1,0));
+	auto spriteBody = PhysicsBody::createCircle(newSize.width / 2, PhysicsMaterial(0, 1, 0));
 	spriteBody->setDynamic(false);
 	sprite->setPhysicsBody(spriteBody);
 }

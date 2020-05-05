@@ -3,19 +3,21 @@
 #include "cocos2d.h"
 #include "definitions.h"
 #include "Header.h"
+#include "iMonster.h"
 
-class Player
+class Player : public iMonster
 {
 public:
-	Player(cocos2d::Node * _parent, Header * _header = nullptr);
+	Player(const std::string& filename, cocos2d::Node* _parent, Header* _header, cocos2d::Vec2 position, int mask);
+
+	void causeDomage(float domage);
 	void keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	void die() override;
+	void appearance(float time) override;
 private:
 	void addListeners();
 	void synchronizeHealth();
 	void synchronizeProtection();
-	cocos2d::Sprite * sprite;
-	Header * header;
-	cocos2d::Node* parent;
-	float health;
+	Header* header;
 	float protection;
 };

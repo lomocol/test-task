@@ -1,21 +1,18 @@
 #pragma once
 #include "cocos2d.h"
 #include "definitions.h"
+#include "settings.h"
+#include "ColumnManager.h"
+#include "iSpawner.h"
 #include "icicle.h"
 
-
-
-class IcicleSpawner
+class IcicleSpawner : public iSpawner
 {
 public:
-	IcicleSpawner(cocos2d::Node* _parent);
-	void startSpawn();
-private:
-	void spawnIcicle();
+	IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount);
+	void startSpawn() override;
 
 private:
-	cocos2d::Size arenaSize;
-	cocos2d::Sprite* spawner;
-	cocos2d::Node* parent;
-	std::vector<Icicle*> icicles;
+	void spawn() override;
+
 };
