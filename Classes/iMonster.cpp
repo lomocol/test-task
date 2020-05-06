@@ -2,8 +2,8 @@
 
 using namespace cocos2d;
 
-iMonster::iMonster(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, int mask) : 
-	parent(_parent), health(100), sprite(nullptr)
+iMonster::iMonster(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo bodyInfo) :
+	parent(_parent), health(100), sprite(nullptr), tag(bodyInfo.tag)
 { 
 	auto texture = ImageManager::instance().getTexture(filename);
 
@@ -16,11 +16,11 @@ iMonster::iMonster(const std::string& filename, cocos2d::Node* _parent, cocos2d:
 	sprite->setPosition(position);
 
 	auto spriteBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PhysicsMaterial(0, 1, 0));
-	spriteBody->setCollisionBitmask(mask);
-	spriteBody->setContactTestBitmask(true);
 	spriteBody->setDynamic(false);
+	setBodyInfo(spriteBody, bodyInfo);
 
 	sprite->setPhysicsBody(spriteBody);
+	
 	parent->addChild(sprite);
 }
 

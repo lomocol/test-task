@@ -25,7 +25,9 @@ void SpiderSpawner::spawn()
 		if (freeColumn.number != -1)
 		{
 			Vec2 position(freeColumn.centerPosition, spawnYPosition);
-			Spider* spider = new Spider(SPIDER_IMAGE, parent, position, SPIDER_MASK + spriteNumber);
+			BodyInfo bodyInfo = SPIDER_BODY_INFO;
+			bodyInfo.tag += spriteNumber;
+			Spider* spider = new Spider(SPIDER_IMAGE, parent, position, bodyInfo);
 
 			spider->appearance(appearanceTime);
 

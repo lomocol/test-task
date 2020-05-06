@@ -23,7 +23,10 @@ void IcicleSpawner::spawn()
 		if (freeColumn.number != -1)
 		{
 			Vec2 position(freeColumn.centerPosition, spawnYPosition);
-			Icicle* icicle = new Icicle(ICICLE_IMAGE, parent, position, ICICLE_MASK + spriteNumber);
+
+			BodyInfo bodyInfo = ICICLE_BODY_INFO;
+			bodyInfo.tag += spriteNumber;
+			Icicle* icicle = new Icicle(ICICLE_IMAGE, parent, position, bodyInfo);
 
 			icicle->appearance(appearanceTime);
 

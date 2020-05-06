@@ -6,7 +6,7 @@
 class Icicle : public iMonster
 {
 public:
-	Icicle(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, int mask);
+	Icicle(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo);
 	void die() override;
 	void appearance(float time) override;
 private:

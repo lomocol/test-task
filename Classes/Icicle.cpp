@@ -3,8 +3,8 @@
 using namespace std;
 using namespace cocos2d;
 
-Icicle::Icicle(const std::string& filename,cocos2d::Node* _parent, cocos2d::Vec2 position, int mask) :
-	iMonster(filename,_parent, position, mask)
+Icicle::Icicle(const std::string& filename,cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo) :
+	iMonster(filename,_parent, position, bodyInfo)
 {
 	
 }

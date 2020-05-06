@@ -27,20 +27,27 @@ bool GameScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-
-
 	createGameSurface();
 	createHeader();
 	createPlayer();
-	addListeners();
+
 	initManagers();
 	startIcicleSpawn();
-
+	startSpiderSpawn();
+	addListeners();
+	
 	return true;
 }
 
 bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 {
+	PhysicsBody* a = contact.getShapeA()->getBody();
+	PhysicsBody* b = contact.getShapeB()->getBody();
+
+	auto one = a->getCollisionBitmask();
+	auto two = b->getCollisionBitmask();
+	auto three = b->getTag();
+	auto three2 = a->getTag();
 	return true;
 }
 
@@ -65,8 +72,7 @@ void GameScene::createGameSurface()
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(visibleSize.width / 2 + origin.x, (visibleSize.height - HEADER_HEIGHT) / 2 + origin.y);
 	auto edgeBody = PhysicsBody::createEdgeBox(edgeSize, PHYSICSBODY_MATERIAL_DEFAULT, 5);
-	edgeBody->setCollisionBitmask(EDGE_MASK);
-	edgeBody->setContactTestBitmask(true);
+	setBodyInfo(edgeBody,EDGE_BODY_INFO);
 	edgeNode->setPhysicsBody(edgeBody);
 
 	// Create ceiling
@@ -75,8 +81,8 @@ void GameScene::createGameSurface()
 	ceiling->setColor(Color3B::GRAY);
 	ceiling->setPosition(0, edgeSize.height / 2 - ceilingSize.height / 2);
 	auto ceilingBody = PhysicsBody::createEdgeBox(ceilingSize, PhysicsMaterial(0, 1, 0), 1);
-	ceilingBody->setCollisionBitmask(CEILING_MASK);
-	ceilingBody->setContactTestBitmask(true);
+	setBodyInfo(ceilingBody, CEILING_BODY_INFO);
+	ceilingBody->setDynamic(false);
 	ceiling->setPhysicsBody(ceilingBody);
 
 	// Create footer
@@ -85,8 +91,8 @@ void GameScene::createGameSurface()
 	footer->setColor(Color3B::GREEN);
 	footer->setPosition(0, -(edgeSize.height / 2 - footerSize.height / 2));
 	auto footergBody = PhysicsBody::createEdgeBox(footerSize, PhysicsMaterial(0, 1, 0), 1);
-	footergBody->setCollisionBitmask(FOOTER_MASK);
-	footergBody->setContactTestBitmask(true);
+	setBodyInfo(footergBody, FOOTER_BODY_INFO);
+	ceilingBody->setDynamic(false);
 	footer->setPhysicsBody(footergBody);
 
 	// Create arena
@@ -116,7 +122,8 @@ void GameScene::createPlayer()
 	ImageManager::instance().addTexture(PLAYER_IMAGE,PLAYER_SIZE);
 
 	Vec2 position(visibleSize.width / 2, visibleSize.height / 2);
-	player = new Player(PLAYER_IMAGE, arena, header, position, PLAYER_MASK);
+
+	player = new Player(PLAYER_IMAGE, arena, header, position, PLAYER_BODY_INFO);
 }
 
 void GameScene::addListeners()
@@ -134,6 +141,7 @@ void GameScene::startIcicleSpawn()
 void GameScene::startSpiderSpawn()
 {
 	spiderSpawner->startSpawn();
+
 }
 
 void GameScene::initManagers()
@@ -141,5 +149,5 @@ void GameScene::initManagers()
 	columnManager = new ColumnManager(arena, COLUMN_COUNT);
 
 	icicleSpawner = new IcicleSpawner(arena, columnManager, MAX_ICICLE_COUNT_FROM);
-	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_ICICLE_COUNT_FROM);
+	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_SPIDER_COUNT_FROM);
 }
