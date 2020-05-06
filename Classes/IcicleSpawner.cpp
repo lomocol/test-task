@@ -12,6 +12,17 @@ IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 	 columnReleaseTime = ICICLE_COLUMN_RELEASE_TIME;
 }
 
+void IcicleSpawner::destroyIcicle(int icicleTag, bool burst)
+{
+	if (burst)
+	{
+		//burst
+	}
+	monsters[icicleTag -ICICLE_TAG]->die();
+	delete monsters[icicleTag - ICICLE_TAG];
+	monsters[icicleTag - ICICLE_TAG] = nullptr;
+}
+
 void IcicleSpawner::spawn()
 {
 

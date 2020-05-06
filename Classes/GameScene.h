@@ -26,6 +26,9 @@ private:
 	void startIcicleSpawn();
 	void startSpiderSpawn();
 	void initManagers();
+	void contactWithPlayer(int contactorTag);
+	void contactWithIcicle(int icicleTag, int contactorTag);
+	void contactWithSpider(int spiderTag, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;
