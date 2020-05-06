@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "definitions.h"
 #include "iMonster.h"
+#include "ui/CocosGUI.h"
 
 class Spider : public iMonster
 {
