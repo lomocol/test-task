@@ -10,7 +10,6 @@ public:
 	void die() override;
 	void appearance(float time) override;
 private:
-	void firstStage();
 	void secondStage();
 	void thirdStage();
 
