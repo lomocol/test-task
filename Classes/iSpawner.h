@@ -9,7 +9,7 @@ class iSpawner
 {
 public:
 	iSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount);
-	virtual void startSpawn() = 0;
+	void startSpawn();
 protected:
 	virtual void spawn() = 0;
 	int getFreeMonsterNumber() const;

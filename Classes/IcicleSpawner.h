@@ -10,8 +10,6 @@ class IcicleSpawner : public iSpawner
 {
 public:
 	IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount);
-	void startSpawn() override;
-
 private:
 	void spawn() override;
 

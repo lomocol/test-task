@@ -11,6 +11,12 @@ columnManager(_columnManager) , maxMonsterCount(_maxMonsterCount)
 	spawnYPosition = parent->getContentSize().height;
 }
 
+void iSpawner::startSpawn()
+{
+	auto spawnCallFunc = CallFunc::create([this]() {this->spawn();});
+	spawner->runAction(spawnCallFunc);
+}
+
 int iSpawner::getFreeMonsterNumber() const
 {
 	int number = -1;

@@ -12,14 +12,6 @@ IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 	 columnReleaseTime = ICICLE_COLUMN_RELEASE_TIME;
 }
 
-void IcicleSpawner::startSpawn()
-{
-	auto spawnCallFunc = CallFunc::create([this]() {this->spawn();});
-	spawner->runAction(spawnCallFunc);
-}
-
-
-
 void IcicleSpawner::spawn()
 {
 
