@@ -3,10 +3,10 @@
 using namespace std;
 using namespace cocos2d;
 
-Icicle::Icicle(const std::string& filename,cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo) :
-	iMonster(filename,_parent, position, bodyInfo)
+Icicle::Icicle(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo& bodyInfo) :
+	iMonster(filename, _parent, position, bodyInfo)
 {
-	
+
 }
 
 void Icicle::appearance(float time)
@@ -16,7 +16,7 @@ void Icicle::appearance(float time)
 	auto secondStage = CallFunc::create([this]() {this->secondStage();});
 	auto thirdStage = CallFunc::create([this]() {this->thirdStage();});
 
-	auto sequence = Sequence::create(stageInterval,secondStage, stageInterval, thirdStage, nullptr);
+	auto sequence = Sequence::create(stageInterval, secondStage, stageInterval, thirdStage, nullptr);
 	sprite->runAction(sequence);
 }
 
@@ -25,16 +25,23 @@ void Icicle::die()
 	if (sprite == nullptr)
 		return;
 
+	float duration = ICICLE_DIE_EFFECT_DURATION;
+
 	auto pos = sprite->getPosition();
 	auto parent = sprite->getParent();
 
 	auto emitter = ParticleMeteor::create();
 	emitter->setPosition(pos.x, pos.y - sprite->getContentSize().height / 2);
-	emitter->setDuration(0.1f);
-	parent->addChild(emitter, 5);
+	emitter->setDuration(duration);
+	parent->addChild(emitter);
 
-	parent->removeChild(sprite);
-	sprite = nullptr;
+	auto emitterRemovingSequence = Sequence::create(DelayTime::create(duration),
+		CallFunc::create([emitter]() {emitter->removeFromParent();})
+		, nullptr);
+
+	emitter->runAction(emitterRemovingSequence);
+
+	sprite->removeFromParent();
 }
 
 void Icicle::secondStage()
