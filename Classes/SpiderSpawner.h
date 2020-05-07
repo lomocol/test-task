@@ -11,5 +11,6 @@ class SpiderSpawner : public iSpawner
 public:
 	SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount);
 private:
+	void addListeners() override;
 	void spawn() override;
 };

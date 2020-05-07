@@ -25,6 +25,10 @@ void IcicleSpawner::destroyIcicle(int icicleTag, bool burst)
 	monsters[icicleTag - ICICLE_TAG] = nullptr;
 }
 
+void IcicleSpawner::addListeners()
+{
+}
+
 void IcicleSpawner::spawn()
 {
 

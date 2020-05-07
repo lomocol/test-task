@@ -7,13 +7,34 @@ using namespace ui;
 Spider::Spider(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo) :
 	iMonster(filename,_parent, position, bodyInfo)
 {
-
+	health = SPIDER_HEALTH;
 }
 
 void Spider::die()
 {
-	//EventCustom event("spider_event");
-	//Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+	EventCustom event("spider_die_event");
+	Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+
+	if (sprite == nullptr)
+		return;
+
+	float duration = ICICLE_DIE_EFFECT_DURATION;
+
+	auto pos = sprite->getPosition();
+	auto parent = sprite->getParent();
+
+	auto emitter = ParticleMeteor::create();
+	emitter->setPosition(pos.x, pos.y - sprite->getContentSize().height / 2);
+	emitter->setDuration(duration);
+	parent->addChild(emitter);
+
+	auto emitterRemovingSequence = Sequence::create(DelayTime::create(duration),
+		CallFunc::create([emitter]() {emitter->removeFromParent();})
+		, nullptr);
+
+	emitter->runAction(emitterRemovingSequence);
+
+	sprite->removeFromParent();
 }
 
 void Spider::appearance(float time)

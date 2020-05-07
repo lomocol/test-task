@@ -35,7 +35,8 @@ void Player::causeDamage(float domage)
 		domage -= protection;
 		protection = 0;
 		synchronizeHealth();
-		changeHealth(-domage);
+		//changeHealth(-domage);
+		health -= domage;
 	}
 	else
 		protection -= domage;

@@ -14,6 +14,14 @@ SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 
 
 
+void SpiderSpawner::addListeners()
+{
+	auto dieListener = EventListenerCustom::create("spider_die_event", [=](EventCustom* event) {
+		CCLOG("SPIDER EVENT CAUGHT in SPAWNER!!!");
+		});
+	parent->getEventDispatcher()->addEventListenerWithSceneGraphPriority(dieListener, parent);
+}
+
 void SpiderSpawner::spawn()
 {
 
@@ -32,7 +40,6 @@ void SpiderSpawner::spawn()
 			spider->appearance(appearanceTime);
 
 			monsters[spriteNumber] = spider;
-			//columnManager->releaseColumnAfter(freeColumn.number, appearanceTime + columnReleaseTime);
 		}
 	}
 

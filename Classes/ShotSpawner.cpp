@@ -42,3 +42,16 @@ void ShotSpawner::spawn()
 		spawner->runAction(sequense);
 	}
 }
+
+void ShotSpawner::removeShot(int shotTag)
+{
+}
+
+void ShotSpawner::addListeners()
+{
+	auto dieListener = EventListenerCustom::create("shot_die_event", [=](EventCustom* event) {
+		CCLOG("SHOT EVENT CAUGHT in SPAWNER!!!");
+		});
+	parent->getEventDispatcher()->addEventListenerWithSceneGraphPriority(dieListener, parent);
+}
+

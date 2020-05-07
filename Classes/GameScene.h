@@ -19,7 +19,7 @@ public:
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
 private:
-	void setPhysicsWorld(cocos2d::PhysicsWorld* _world) { world = _world; };
+	void setPhysicsWorld(cocos2d::PhysicsWorld* _world) noexcept { world = _world; };
 	void createHeader();
 	void createGameSurface();
 	void createPlayer();
@@ -27,9 +27,11 @@ private:
 	void startIcicleSpawn();
 	void startSpiderSpawn();
 	void initManagers();
+
 	void contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contactorBody);
 	void contactWithIcicle(int icicleTag, int contactorTag);
 	void contactWithSpider(int spiderTag, int contactorTag);
+	void contactWithShot(int shotTag, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;

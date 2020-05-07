@@ -9,12 +9,31 @@ columnManager(_columnManager) , maxMonsterCount(_maxMonsterCount)
 	spawner = Sprite::create();
 	parent->addChild(spawner);
 	spawnYPosition = parent->getContentSize().height;
+
+	addListeners();
 }
 
 void iSpawner::startSpawn()
 {
 	auto spawnCallFunc = CallFunc::create([this]() {this->spawn();});
 	spawner->runAction(spawnCallFunc);
+}
+
+void iSpawner::causeDamage(int monsterNumber,int damage)
+{
+	auto monster = monsters[monsterNumber];
+	if (monster != nullptr)
+	{
+		if (monster->causeDamage(damage))
+		{
+ 			delete monster;
+			monsters[monsterNumber] = nullptr;
+		}
+	}
+}
+
+void iSpawner::addListeners()
+{
 }
 
 int iSpawner::getFreeMonsterNumber() const

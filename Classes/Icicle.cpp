@@ -6,7 +6,7 @@ using namespace cocos2d;
 Icicle::Icicle(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo& bodyInfo) :
 	iMonster(filename, _parent, position, bodyInfo)
 {
-
+	health = ICICLE_HEALTH;
 }
 
 void Icicle::appearance(float time)
@@ -22,6 +22,8 @@ void Icicle::appearance(float time)
 
 void Icicle::die()
 {
+	EventCustom event("icicle_die_event");
+	Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 	if (sprite == nullptr)
 		return;
 
