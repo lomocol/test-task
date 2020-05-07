@@ -3,11 +3,9 @@
 using namespace cocos2d;
 using namespace std;
 
-Player::Player(const std::string & filename, cocos2d::Node* _parent, Header* _header, cocos2d::Vec2 position, const BodyInfo & bodyInfo) :
-	iMonster(filename,_parent, position, bodyInfo)
+Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _header, cocos2d::Vec2 position, const BodyInfo& bodyInfo) :
+	iMonster(filename, _parent, position, bodyInfo), shotSpawner(nullptr), header(_header)
 {
-	header = _header;
-
 	health = 100;
 	protection = 100;
 
@@ -23,13 +21,14 @@ Player::Player(const std::string & filename, cocos2d::Node* _parent, Header* _he
 
 void Player::die()
 {
+
 }
 
 void Player::appearance(float time)
 {
 }
 
-void Player::causeDomage(float domage)
+void Player::causeDamage(float domage)
 {
 	if (protection < domage)
 	{
@@ -65,28 +64,24 @@ void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
 				{
 					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -100));
 				}
+				else
+					if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+					{
+						shot();
+					}
 
 }
-bool Player::onContactBegin(cocos2d::PhysicsContact& contact)
+
+void Player::shot()
 {
-	PhysicsBody* a = contact.getShapeA()->getBody();
-	PhysicsBody* b = contact.getShapeB()->getBody();
-
-	auto one = a->getCollisionBitmask();
-	auto two = b->getCollisionBitmask();
-
-	return false;
+	shotSpawner->spawn();
 }
+
 void Player::addListeners()
 {
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Player::keyPressed, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, sprite);
-
-	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(Player::onContactBegin, this);
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, sprite);
-
 }
 
 void Player::synchronizeHealth()

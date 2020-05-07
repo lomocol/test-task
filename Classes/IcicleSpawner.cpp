@@ -4,8 +4,8 @@ using namespace std;
 using namespace cocos2d;
 
 
-IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount) :
-	iSpawner(_parent, columnManager, maxMonsterCount)
+IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManager , int maxMonsterCount) :
+	iSpawner(_parent, maxMonsterCount,columnManager)
 {
 	 spawnInterval = ICICLE_SPAWN_INTERVAL;
 	 appearanceTime = ICICLE_APPEARANCE_TIME;
@@ -14,10 +14,12 @@ IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 
 void IcicleSpawner::destroyIcicle(int icicleTag, bool burst)
 {
-	if (burst)
-	{
-		//burst
-	}
+	//if (burst)
+	//{
+	//	//burst
+	//}
+	if (monsters[icicleTag - ICICLE_TAG] == nullptr)
+		return;
 	monsters[icicleTag -ICICLE_TAG]->die();
 	delete monsters[icicleTag - ICICLE_TAG];
 	monsters[icicleTag - ICICLE_TAG] = nullptr;

@@ -10,6 +10,7 @@ class iMonster
 {
 public:
 	iMonster(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position,const BodyInfo bodyInfo);
+	iMonster(cocos2d::Size size, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo bodyInfo);
 	virtual void die() = 0;
 	virtual void changeHealth(float value);
 	virtual void appearance(float time) = 0;

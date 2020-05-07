@@ -7,6 +7,7 @@
 #include "icicleSpawner.h"
 #include "spiderSpawner.h"
 
+
 class GameScene : public cocos2d::Scene
 {
 public:
@@ -26,12 +27,13 @@ private:
 	void startIcicleSpawn();
 	void startSpiderSpawn();
 	void initManagers();
-	void contactWithPlayer(int contactorTag);
+	void contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contactorBody);
 	void contactWithIcicle(int icicleTag, int contactorTag);
 	void contactWithSpider(int spiderTag, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;
+	ShotSpawner* shotSpawner;
 	ColumnManager* columnManager;
 	Header* header;
 	Player* player;

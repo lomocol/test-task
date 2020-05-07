@@ -5,7 +5,7 @@ using namespace cocos2d;
 
 
 SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount) :
-	iSpawner(_parent, columnManager, maxMonsterCount)
+	iSpawner(_parent, maxMonsterCount, columnManager)
 {
 	 spawnInterval = SPIDER_SPAWN_INTERVAL;
 	 appearanceTime = SPIDER_APPEARANCE_TIME;
@@ -32,7 +32,7 @@ void SpiderSpawner::spawn()
 			spider->appearance(appearanceTime);
 
 			monsters[spriteNumber] = spider;
-			columnManager->releaseColumnAfter(freeColumn.number, appearanceTime + columnReleaseTime);
+			//columnManager->releaseColumnAfter(freeColumn.number, appearanceTime + columnReleaseTime);
 		}
 	}
 

@@ -2,7 +2,7 @@
 
 using namespace cocos2d;
 
-iSpawner::iSpawner(cocos2d::Node* _parent, ColumnManager* _columnManager, int _maxMonsterCount) :parent(_parent) ,
+iSpawner::iSpawner(cocos2d::Node* _parent, int _maxMonsterCount, ColumnManager* _columnManager) :parent(_parent) ,
 columnManager(_columnManager) , maxMonsterCount(_maxMonsterCount)
 {
 	monsters.assign(maxMonsterCount,nullptr);
