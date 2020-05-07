@@ -10,6 +10,13 @@ SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 	 spawnInterval = SPIDER_SPAWN_INTERVAL;
 	 appearanceTime = SPIDER_APPEARANCE_TIME;
 	 columnReleaseTime = SPIDER_COLUMN_RELEASE_TIME;
+	 busyColumns.assign(maxMonsterCount,-1);
+}
+
+void SpiderSpawner::causeDamage(int monsterNumber, int damage)
+{
+	columnManager->releaseColumn(busyColumns[monsterNumber]);
+	iSpawner::causeDamage(monsterNumber, damage);
 }
 
 
@@ -30,7 +37,8 @@ void SpiderSpawner::spawn()
 	if (spriteNumber != -1)
 	{
 		Column freeColumn = columnManager->getFreeColumn();
-		if (freeColumn.number != -1)
+		int columnNum = freeColumn.number;
+		if (columnNum != -1)
 		{
 			Vec2 position(freeColumn.centerPosition, spawnYPosition);
 			BodyInfo bodyInfo = SPIDER_BODY_INFO;
@@ -39,6 +47,7 @@ void SpiderSpawner::spawn()
 
 			spider->appearance(appearanceTime);
 
+			busyColumns[spriteNumber] = columnNum;
 			monsters[spriteNumber] = spider;
 		}
 	}
