@@ -53,9 +53,10 @@ void Spider::appearance(float time)
 	web->runAction(ProgressTo::create(SPIDER_APPEARANCE_TIME, 100));
 
 	auto spiderMoveDown = MoveBy::create(SPIDER_APPEARANCE_TIME,Vec2(0,-webLenght));
-	auto webRemove = CallFunc::create([this, web]() {parent->removeChild(web);});
-	auto sequence = Sequence::create(spiderMoveDown, webRemove,nullptr);
+	sprite->runAction(spiderMoveDown);
 
-	sprite->runAction(sequence);
+	auto webRemove = CallFunc::create([web]() {web->removeFromParent();});
+	auto sequence = Sequence::create(DelayTime::create(SPIDER_APPEARANCE_TIME), webRemove,nullptr);
+	parent->runAction(sequence);
 	
 }
