@@ -25,31 +25,23 @@ void Icicle::appearance(float time)
 
 void Icicle::die()
 {
-	
-	EventCustom event("icicle_die_event");
-	Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
-	if (sprite == nullptr)
-		return;
+	sendNotifications();
+}
 
-	float duration = ICICLE_DIE_EFFECT_DURATION;
-
-	auto pos = sprite->getPosition();
-	auto parent = sprite->getParent();
-
-	auto emitter = ParticleMeteor::create();
-	emitter->setPosition(pos.x, pos.y - sprite->getContentSize().height);
-	emitter->setDuration(duration);
-	parent->addChild(emitter);
-
-	auto emitterRemovingSequence = Sequence::create(DelayTime::create(duration),
-		CallFunc::create([emitter]() {emitter->removeFromParent();})
-		, nullptr);
-
-	emitter->runAction(emitterRemovingSequence);
-	
-	sprite->removeFromParent();
-
-	
+void Icicle::sendNotifications()
+{
+	{
+		EventCustom event("icicle_drop_bonus_event");
+		Vec2* position = new Vec2(sprite->getPosition());
+		event.setUserData(position);
+		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+	}
+	{
+		EventCustom event("icicle_die_event");
+		int* num = new int(tag - ICICLE_TAG);
+		event.setUserData(num);
+		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+	}
 }
 
 void Icicle::changeSize(const std::string& filename)
@@ -61,13 +53,13 @@ void Icicle::changeSize(const std::string& filename)
 	auto newSpriteBody = PhysicsBody::createCircle(newSize.width / 2, PhysicsMaterial(0, 1, 0));
 	setBodyInfo(newSpriteBody, getBodyInfo(sprite->getPhysicsBody()));
 
-	auto pos = sprite->getPosition();
+	auto position = sprite->getPosition();
 
 	sprite->removeFromParent();
 
 	sprite = Sprite::createWithTexture(texture);
 	sprite->setAnchorPoint(Point(0.5, 1));
-	sprite->setPosition(pos);
+	sprite->setPosition(position);
 	sprite->setPhysicsBody(newSpriteBody);
 
 	parent->addChild(sprite);

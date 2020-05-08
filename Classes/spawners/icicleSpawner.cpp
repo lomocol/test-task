@@ -10,23 +10,17 @@ IcicleSpawner::IcicleSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 	 spawnInterval = ICICLE_SPAWN_INTERVAL;
 	 appearanceTime = ICICLE_APPEARANCE_TIME;
 	 columnReleaseTime = ICICLE_COLUMN_RELEASE_TIME;
-}
-
-void IcicleSpawner::destroyIcicle(int icicleTag, bool burst)
-{
-	//if (burst)
-	//{
-	//	//burst
-	//}
-	if (monsters[icicleTag - ICICLE_TAG] == nullptr)
-		return;
-	monsters[icicleTag -ICICLE_TAG]->die();
-	delete monsters[icicleTag - ICICLE_TAG];
-	monsters[icicleTag - ICICLE_TAG] = nullptr;
+	 addListeners();
 }
 
 void IcicleSpawner::addListeners()
 {
+	auto dieListener = EventListenerCustom::create("icicle_die_event", [=](EventCustom* event) {
+		int* num = static_cast<int*>(event->getUserData());
+		releaseMonster(*num);
+		delete num;
+		});
+	parent->getEventDispatcher()->addEventListenerWithSceneGraphPriority(dieListener, parent);
 }
 
 void IcicleSpawner::spawn()
