@@ -3,9 +3,9 @@
 #include "cocos2d.h"
 #include "definitions.h"
 #include "Header.h"
-#include "Player.h"
-#include "icicleSpawner.h"
-#include "spiderSpawner.h"
+#include "monsters/Player.h"
+#include "spawners/icicleSpawner.h"
+#include "spawners/spiderSpawner.h"
 
 
 class GameScene : public cocos2d::Scene

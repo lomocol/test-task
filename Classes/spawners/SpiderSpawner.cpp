@@ -13,14 +13,6 @@ SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 	 busyColumns.assign(maxMonsterCount,-1);
 }
 
-void SpiderSpawner::causeDamage(int monsterNumber, int damage)
-{
-	columnManager->releaseColumn(busyColumns[monsterNumber]);
-	iSpawner::causeDamage(monsterNumber, damage);
-}
-
-
-
 void SpiderSpawner::addListeners()
 {
 	auto dieListener = EventListenerCustom::create("spider_die_event", [=](EventCustom* event) {

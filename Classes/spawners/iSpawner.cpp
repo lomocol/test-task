@@ -23,13 +23,8 @@ void iSpawner::causeDamage(int monsterNumber,int damage)
 {
 	auto monster = monsters[monsterNumber];
 	if (monster != nullptr)
-	{
-		if (monster->causeDamage(damage))
-		{
- 			delete monster;
-			monsters[monsterNumber] = nullptr;
-		}
-	}
+		monster->causeDamage(damage);
+	
 }
 
 void iSpawner::addListeners()

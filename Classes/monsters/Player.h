@@ -4,7 +4,7 @@
 #include "definitions.h"
 #include "Header.h"
 #include "iMonster.h"
-#include "shotSpawner.h"
+#include "../spawners/ShotSpawner.h"
 
 class Player : public iMonster
 {

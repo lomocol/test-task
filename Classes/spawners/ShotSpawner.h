@@ -1,6 +1,6 @@
 #pragma once
 #include "iSpawner.h"
-#include "shot.h"
+#include "../monsters/shot.h"
 class ShotSpawner : public iSpawner
 {
 public:

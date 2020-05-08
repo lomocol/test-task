@@ -45,6 +45,7 @@ void ShotSpawner::spawn()
 
 void ShotSpawner::removeShot(int shotTag)
 {
+
 }
 
 void ShotSpawner::addListeners()

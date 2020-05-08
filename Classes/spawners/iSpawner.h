@@ -3,7 +3,7 @@
 #include "definitions.h"
 #include "settings.h"
 #include "ColumnManager.h"
-#include "iMonster.h"
+#include "../monsters/iMonster.h"
 #include <vector>
 class iSpawner
 {

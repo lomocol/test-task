@@ -4,7 +4,7 @@
 #include "settings.h"
 #include "ColumnManager.h"
 #include "iSpawner.h"
-#include "icicle.h"
+#include "../monsters/icicle.h"
 
 class IcicleSpawner : public iSpawner
 {

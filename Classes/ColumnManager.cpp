@@ -11,6 +11,7 @@ ColumnManager::ColumnManager(cocos2d::Node* _parent, int _columnCount) : columnC
 	columnWidth = arenaWidth / columnCount;
 	columns.assign(columnCount, false);
 	adjustImagesToColumnNumber(columnCount);
+	addListeners();
 }
 
 ColumnManager::~ColumnManager()
@@ -25,6 +26,8 @@ void ColumnManager::adjustImagesToColumnNumber(int columnNubmer)
 	ImageManager::instance().addTexture(ICICLE_THIRD_IMAGE, Size(columnWidth - ICICLE_PADDING, 55));
 
 	ImageManager::instance().addTexture(SPIDER_IMAGE, Size(columnWidth - SPIDER_PADDING, columnWidth - SPIDER_PADDING));
+	ImageManager::instance().addTexture(SPIDER_DEAD_IMAGE, Size(columnWidth - SPIDER_PADDING, columnWidth - SPIDER_PADDING));
+	ImageManager::instance().addTexture(FRAGMENT_IMAGE, FRAGMENT_SIZE);
 }
 
 Column ColumnManager::getFreeColumn()
@@ -58,4 +61,27 @@ void ColumnManager::releaseColumnAfter(int columnNumber, float time)
 	auto delay = DelayTime::create(time);
 	auto sequence = Sequence::create(delay, releaseAction, nullptr);
 	releaser->runAction(sequence);
+}
+
+void ColumnManager::addListeners()
+{
+	auto _listener = EventListenerCustom::create("icicle_die_event", [=](EventCustom* event) {
+		
+			
+
+		return true;
+		});
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_listener, releaser);
+
+	auto _listener2 = EventListenerCustom::create("spider_die_event", [=](EventCustom* event) {
+
+		char* buf = static_cast<char*>(event->getUserData());
+		std::string str;
+		str += buf;
+		int x = stoi(str);
+		return true;
+		});
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_listener2, releaser);
+
+	
 }

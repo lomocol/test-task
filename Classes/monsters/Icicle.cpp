@@ -22,6 +22,7 @@ void Icicle::appearance(float time)
 
 void Icicle::die()
 {
+	
 	EventCustom event("icicle_die_event");
 	Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 	if (sprite == nullptr)
@@ -33,7 +34,7 @@ void Icicle::die()
 	auto parent = sprite->getParent();
 
 	auto emitter = ParticleMeteor::create();
-	emitter->setPosition(pos.x, pos.y - sprite->getContentSize().height / 2);
+	emitter->setPosition(pos.x, pos.y - sprite->getContentSize().height);
 	emitter->setDuration(duration);
 	parent->addChild(emitter);
 
@@ -42,8 +43,30 @@ void Icicle::die()
 		, nullptr);
 
 	emitter->runAction(emitterRemovingSequence);
-
+	
 	sprite->removeFromParent();
+
+	
+}
+
+void Icicle::split()
+{
+	{
+		auto texture = ImageManager::instance().getTexture("fragment.png");
+		if (texture == nullptr)
+			return;
+		auto fragment1 = Sprite::createWithTexture(texture);
+		auto size = fragment1->getContentSize();
+		auto spriteBody = PhysicsBody::createCircle(size.width / 2, PhysicsMaterial(0, 1, 0));
+		spriteBody->setDynamic(false);
+		setBodyInfo(spriteBody, FRAGMENT_BODY_INFO);
+		fragment1->setPhysicsBody(spriteBody);
+		auto pos = sprite->getPosition();
+		pos.y += 40;
+		fragment1->setPosition(pos);
+		parent->addChild(fragment1);
+	}
+	
 }
 
 void Icicle::secondStage()

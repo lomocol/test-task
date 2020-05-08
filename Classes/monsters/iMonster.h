@@ -14,7 +14,7 @@ public:
 	virtual void die() = 0;
 	// return true, if the monster was killed after dealing damage,
 	// otherwise return false
-	virtual bool causeDamage(int damage);
+	virtual void causeDamage(int damage);
 	virtual void appearance(float time) = 0;
 protected:
 	cocos2d::Node* parent;

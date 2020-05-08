@@ -7,8 +7,8 @@
 
 struct Column
 {
-	int number = -1;
-	int centerPosition = -1;
+	int number = -1;	// column number
+	int centerPosition = -1;	// center of the column
 };
 
 class ColumnManager
@@ -20,7 +20,7 @@ public:
 	Column getFreeColumn();
 	void releaseColumn(int columnNumber);
 	void releaseColumnAfter(int columnNumber, float time);
-
+	void addListeners();
 private:
 	cocos2d::Node* parent;
 	cocos2d::Sprite* releaser;

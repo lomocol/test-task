@@ -42,14 +42,9 @@ iMonster::iMonster(cocos2d::Size size, cocos2d::Node* _parent, cocos2d::Vec2 pos
 	parent->addChild(sprite);
 }
 
-bool iMonster::causeDamage(int damage)
+void iMonster::causeDamage(int damage)
 {
 	health -= damage;
 	if (health <= 0)
-	{
 		die();
-		return true;
-	}
-	return false;
-		
 }
