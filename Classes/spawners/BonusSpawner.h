@@ -13,9 +13,10 @@ public:
 private:
 	virtual void addListeners();
 	BonusType randomBonusType(const std::vector<BonusType> & types);
-	void dropSpiderBonus(cocos2d::Vec2 position);
-	void dropIcicleBonus(cocos2d::Vec2 position);
+	void dropSpiderBonus(const cocos2d::Vec2 & position);
+	void dropIcicleBonus(const cocos2d::Vec2 & position);
 	void startSpawn() {};
+	void spawn(BonusType type,const cocos2d::Vec2  position);
 	void spawn() {};
 private:
 

@@ -9,20 +9,20 @@ Bonus::Bonus(cocos2d::Size size, cocos2d::Node* _parent, cocos2d::Vec2 position,
     Texture2D* texture = nullptr;
 	switch (_type)
 	{
-    case Bonus::BonusType::Health:
+    case BonusType::Health:
         texture = ImageManager::instance().getTexture("bonus/health.png");
         break;
-    case Bonus::BonusType::Protection:
+    case BonusType::Protection:
         texture = ImageManager::instance().getTexture("bonus/protection.png");
         break;
-    case Bonus::BonusType::FireBall:
+    case BonusType::FireBall:
         texture = ImageManager::instance().getTexture("bonus/fireball.png");
         break;
-    case Bonus::BonusType::Block:
+    case BonusType::Block:
         texture = ImageManager::instance().getTexture("bonus/block.png");
         break;
-    case Bonus::BonusType::Sheil:
-        texture = ImageManager::instance().getTexture("bonus/shiel.png");
+    case BonusType::Shield:
+        texture = ImageManager::instance().getTexture("bonus/shield.png");
         break;
     default:
         throw exception("Unknown BonusType");
