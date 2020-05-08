@@ -8,40 +8,33 @@ Spider::Spider(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec
 	iMonster(filename,_parent, position, bodyInfo)
 {
 	health = SPIDER_HEALTH;
+	dead = false;
 }
 
 void Spider::die()
 {
-	EventCustom event("spider_die_event");
-	Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 
 	if (sprite == nullptr)
 		return;
 
-	float duration = ICICLE_DIE_EFFECT_DURATION;
+	auto texture = ImageManager::instance().getTexture("spider_dead.png");
+	if(texture != nullptr)
+		sprite->setTexture(texture);
 
 	auto pos = sprite->getPosition();
-	auto parent = sprite->getParent();
+	pos.y = sprite->getContentSize().height;
 
-	auto emitter = ParticleMeteor::create();
-	emitter->setPosition(pos.x, pos.y - sprite->getContentSize().height / 2);
-	emitter->setDuration(duration);
-	parent->addChild(emitter);
-
-	auto emitterRemovingSequence = Sequence::create(DelayTime::create(duration),
-		CallFunc::create([emitter]() {emitter->removeFromParent();})
-		, nullptr);
-
-	emitter->runAction(emitterRemovingSequence);
-
-	sprite->removeFromParent();
+	auto moveDown = MoveTo::create(SPIDER_FALL_TIME, pos);
+	sprite->runAction(moveDown);
+	web->removeFromParent();
+	dead = true;
 }
 
 void Spider::appearance(float time)
 {
 	int webLenght = rand() % (SPIDER_WEB_LENGHT_MAX - SPIDER_WEB_LENGHT_MIN) + SPIDER_WEB_LENGHT_MIN;
 
-	LoadingBar * web = LoadingBar::create("bar.png");
+	web = LoadingBar::create("bar.png");
 
 	web->setScale(webLenght / web->getContentSize().width, SPIDER_WEB_WIDTH_SCALE);
 	web->setDirection(LoadingBar::Direction::LEFT);
@@ -55,8 +48,29 @@ void Spider::appearance(float time)
 	auto spiderMoveDown = MoveBy::create(SPIDER_APPEARANCE_TIME,Vec2(0,-webLenght));
 	sprite->runAction(spiderMoveDown);
 
-	auto webRemove = CallFunc::create([web]() {web->removeFromParent();});
-	auto sequence = Sequence::create(DelayTime::create(SPIDER_APPEARANCE_TIME), webRemove,nullptr);
-	parent->runAction(sequence);
+}
+
+void Spider::causeDamage(int damage)
+{
+	if (dead)
+	{
+		sprite->removeFromParent();
+		sendNotifications();
+	}
+	else
+		iMonster::causeDamage(damage);
+}
+
+
+
+void Spider::sendNotifications()
+{
+	{
+		EventCustom event("spider_die_event");
+		string str = std::to_string(tag - SPIDER_TAG);
+		char* a = &str[0];
+		event.setUserData(a);
+		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+	}
 	
 }

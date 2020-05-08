@@ -33,7 +33,7 @@ bool GameScene::init()
 
 	initManagers();
 
-	startIcicleSpawn();
+	//startIcicleSpawn();
 	startSpiderSpawn();
 
 	addListeners();
@@ -175,7 +175,11 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 		IS_SPIDER(oneTag) ? contactWithSpider(oneTag, twoTag) : contactWithSpider(twoTag, oneTag);
 		return true;
 	}
-
+	if (IS_FRAGMENT(oneTag) || IS_FRAGMENT(twoTag))
+	{
+		//IS_SHOT(oneTag) ? contactWithShot(oneTag, twoTag) : contactWithShot(twoTag, oneTag);
+		return true;
+	}
 	return true;
 }
 
@@ -201,7 +205,7 @@ void GameScene::contactWithIcicle(int icicleTag, int contactorTag)
 {
 	if (contactorTag == FOOTER_TAG)
 	{
-		icicleSpawner->destroyIcicle(icicleTag, true);
+ 		icicleSpawner->destroyIcicle(icicleTag, true);
 	}
 	if (contactorTag == PLAYER_TAG)
 	{
@@ -211,14 +215,22 @@ void GameScene::contactWithIcicle(int icicleTag, int contactorTag)
 
 void GameScene::contactWithSpider(int spiderTag, int contactorTag)
 {
+	if (contactorTag == CEILING_TAG)
+	{
+	
+	}
+	else
+	{
+		spiderSpawner->causeDamage(spiderTag - SPIDER_TAG, 0);
+	}
 }
 
 void GameScene::contactWithShot(int shotTag, int contactorTag)
 {
 	if (IS_SPIDER(contactorTag))
 	{
-		spiderSpawner->causeDamage(contactorTag - SPIDER_TAG, DAMAGE_FROM_SHOT * 50);
-		shotSpawner->causeDamage(shotTag- SHOT_TAG, SHOT_HEALTH);
+		spiderSpawner->causeDamage(contactorTag - SPIDER_TAG, DAMAGE_FROM_SHOT * 500);
+		//shotSpawner->causeDamage(shotTag- SHOT_TAG, SHOT_HEALTH);
 	}else
 		if (IS_ICICLE(contactorTag))
 		{
