@@ -12,6 +12,7 @@ public:
 	void startSpawn();
 	void causeDamage(int monsterNumber, int damage);
 protected:
+	void releaseMonster(int num);
 	virtual void addListeners();
 	virtual void spawn() = 0;
 	int getFreeMonsterNumber() const;

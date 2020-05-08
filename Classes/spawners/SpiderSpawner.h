@@ -14,5 +14,4 @@ private:
 	void addListeners() override;
 	void spawn() override;
 private:
-	std::vector<int> busyColumns;
 };

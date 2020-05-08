@@ -4,8 +4,8 @@ using namespace std;
 using namespace cocos2d;
 using namespace ui;
 
-Spider::Spider(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo) :
-	iMonster(filename,_parent, position, bodyInfo)
+Spider::Spider(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo, int columnNum) :
+	iMonster(filename,_parent, position, bodyInfo),columnNum(columnNum)
 {
 	health = SPIDER_HEALTH;
 	dead = false;
@@ -54,8 +54,8 @@ void Spider::causeDamage(int damage)
 {
 	if (dead)
 	{
-		sprite->removeFromParent();
 		sendNotifications();
+		//sprite->removeFromParent();
 	}
 	else
 		iMonster::causeDamage(damage);
@@ -66,10 +66,15 @@ void Spider::causeDamage(int damage)
 void Spider::sendNotifications()
 {
 	{
+		EventCustom event("release_column_event");
+		int* column = new int(columnNum);
+		event.setUserData(column);
+		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+	}
+	{
 		EventCustom event("spider_die_event");
-		string str = std::to_string(tag - SPIDER_TAG);
-		char* a = &str[0];
-		event.setUserData(a);
+		int* num = new int(tag - SPIDER_TAG);
+		event.setUserData(num);
 		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 	}
 	

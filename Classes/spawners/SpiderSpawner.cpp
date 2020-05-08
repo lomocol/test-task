@@ -10,20 +10,21 @@ SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManage
 	 spawnInterval = SPIDER_SPAWN_INTERVAL;
 	 appearanceTime = SPIDER_APPEARANCE_TIME;
 	 columnReleaseTime = SPIDER_COLUMN_RELEASE_TIME;
-	 busyColumns.assign(maxMonsterCount,-1);
+	 addListeners();
 }
 
 void SpiderSpawner::addListeners()
 {
 	auto dieListener = EventListenerCustom::create("spider_die_event", [=](EventCustom* event) {
-		CCLOG("SPIDER EVENT CAUGHT in SPAWNER!!!");
+		int* num = static_cast<int*>(event->getUserData());
+		releaseMonster(*num);
+		delete num;
 		});
 	parent->getEventDispatcher()->addEventListenerWithSceneGraphPriority(dieListener, parent);
 }
 
 void SpiderSpawner::spawn()
 {
-
 	int spriteNumber = getFreeMonsterNumber();
 
 	if (spriteNumber != -1)
@@ -35,11 +36,10 @@ void SpiderSpawner::spawn()
 			Vec2 position(freeColumn.centerPosition, spawnYPosition);
 			BodyInfo bodyInfo = SPIDER_BODY_INFO;
 			bodyInfo.tag += spriteNumber;
-			Spider* spider = new Spider(SPIDER_IMAGE, parent, position, bodyInfo);
+			Spider* spider = new Spider(SPIDER_IMAGE, parent, position, bodyInfo, columnNum);
 
 			spider->appearance(appearanceTime);
 
-			busyColumns[spriteNumber] = columnNum;
 			monsters[spriteNumber] = spider;
 		}
 	}

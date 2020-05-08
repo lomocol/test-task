@@ -27,6 +27,12 @@ void iSpawner::causeDamage(int monsterNumber,int damage)
 	
 }
 
+void iSpawner::releaseMonster(int num)
+{
+	delete monsters[num];
+	monsters[num] = nullptr;
+}
+
 void iSpawner::addListeners()
 {
 }
