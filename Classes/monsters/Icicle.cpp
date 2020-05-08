@@ -13,11 +13,14 @@ void Icicle::appearance(float time)
 {
 	auto stageInterval = DelayTime::create(time / 3);
 
-	auto secondStage = CallFunc::create([this]() {this->secondStage();});
-	auto thirdStage = CallFunc::create([this]() {this->thirdStage();});
+	auto secondStage = CallFunc::create([this]() {
+		changeSize(ICICLE_SECOND_IMAGE);
+		sprite->getPhysicsBody()->setDynamic(false);
+		});
+	auto thirdStage = CallFunc::create([this]() {changeSize(ICICLE_THIRD_IMAGE);});
 
 	auto sequence = Sequence::create(stageInterval, secondStage, stageInterval, thirdStage, nullptr);
-	sprite->runAction(sequence);
+	parent->runAction(sequence);
 }
 
 void Icicle::die()
@@ -49,43 +52,23 @@ void Icicle::die()
 	
 }
 
-void Icicle::split()
+void Icicle::changeSize(const std::string& filename)
 {
-	{
-		auto texture = ImageManager::instance().getTexture("fragment.png");
-		if (texture == nullptr)
-			return;
-		auto fragment1 = Sprite::createWithTexture(texture);
-		auto size = fragment1->getContentSize();
-		auto spriteBody = PhysicsBody::createCircle(size.width / 2, PhysicsMaterial(0, 1, 0));
-		spriteBody->setDynamic(false);
-		setBodyInfo(spriteBody, FRAGMENT_BODY_INFO);
-		fragment1->setPhysicsBody(spriteBody);
-		auto pos = sprite->getPosition();
-		pos.y += 40;
-		fragment1->setPosition(pos);
-		parent->addChild(fragment1);
-	}
-	
-}
+	auto texture = ImageManager::instance().getTexture(filename);
 
-void Icicle::secondStage()
-{
-	auto texture = ImageManager::instance().getTexture("icicle2.png");
 	auto newSize = texture->getContentSize();
-	sprite->setTexture(texture);
-	sprite->setContentSize(newSize);
-	auto spriteBody = sprite->getPhysicsBody();
-	spriteBody->createCircle(newSize.width / 2, PhysicsMaterial(0, 1, 0));
-}
 
-void Icicle::thirdStage()
-{
-	auto texture = ImageManager::instance().getTexture("icicle3.png");
-	auto newSize = texture->getContentSize();
-	sprite->setTexture(texture);
-	sprite->setContentSize(newSize);
-	auto spriteBody = sprite->getPhysicsBody();
-	spriteBody->createCircle(newSize.width / 2, PhysicsMaterial(0, 1, 0));
-	spriteBody->setDynamic(true);
+	auto newSpriteBody = PhysicsBody::createCircle(newSize.width / 2, PhysicsMaterial(0, 1, 0));
+	setBodyInfo(newSpriteBody, getBodyInfo(sprite->getPhysicsBody()));
+
+	auto pos = sprite->getPosition();
+
+	sprite->removeFromParent();
+
+	sprite = Sprite::createWithTexture(texture);
+	sprite->setAnchorPoint(Point(0.5, 1));
+	sprite->setPosition(pos);
+	sprite->setPhysicsBody(newSpriteBody);
+
+	parent->addChild(sprite);
 }
