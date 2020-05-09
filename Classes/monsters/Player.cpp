@@ -50,44 +50,28 @@ void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
 {
 	if (keyCode == EventKeyboard::KeyCode::KEY_W)
 	{
-		sprite->getPhysicsBody()->applyImpulse(Vec2(0, 100));
+		sprite->getPhysicsBody()->applyImpulse(Vec2(0, 20));
 	}
 	else
 		if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
-			sprite->getPhysicsBody()->applyImpulse(Vec2(-100, 0));
+			sprite->getPhysicsBody()->applyImpulse(Vec2(-50, 0));
 		}
 		else
 			if (keyCode == EventKeyboard::KeyCode::KEY_D)
 			{
-				sprite->getPhysicsBody()->applyImpulse(Vec2(100, 0));
+				sprite->getPhysicsBody()->applyImpulse(Vec2(50, 0));
 			}
 			else
 				if (keyCode == EventKeyboard::KeyCode::KEY_S)
 				{
-					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -100));
+					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -20));
 				}
 				else
 					if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
 					{
 						shot();
-						return;
-						auto sprite2 = Sprite::create();
-
-						sprite2->setTextureRect(Rect(Vec2(0, 0), { 20,20 }));
-						sprite2->setAnchorPoint(Point(0.5f, 0.0f));
-						auto pos = sprite->getPosition();
-						pos.y += 33;
-						sprite2->setPosition({100,100});
-
-						auto spriteBody = PhysicsBody::createBox({ 20,20 }, PhysicsMaterial(0, 1, 0));
-						spriteBody->setDynamic(true);
-						setBodyInfo(spriteBody, FRAGMENT_BODY_INFO);
-
-						sprite2->setPhysicsBody(spriteBody);
-						parent->addChild(sprite2);
 					}
-
 }
 
 void Player::shot()
