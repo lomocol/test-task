@@ -4,9 +4,11 @@
 #include "supportingFunctional.h"
 
 #define PLAYER_IMAGE "player.png"
+#define PLAYER_DEAD_IMAGE "player_dead.png"
+
 #define ICICLE_IMAGE "icicle.png"
-#define ICICLE_SECOND_IMAGE "icicle.png"
-#define ICICLE_THIRD_IMAGE "icicle.png"
+#define ICICLE_SECOND_IMAGE "icicle2.png"
+#define ICICLE_THIRD_IMAGE "icicle3.png"
 #define SPIDER_IMAGE "spider.png"
 #define SPIDER_DEAD_IMAGE "spider_dead.png"
 #define FRAGMENT_IMAGE "fragment.png"

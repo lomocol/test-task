@@ -21,7 +21,8 @@ Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _hea
 
 void Player::die()
 {
-
+	auto texture = ImageManager::instance().getTexture(PLAYER_DEAD_IMAGE);
+	sprite->setTexture(texture);
 }
 
 void Player::appearance(float time)
@@ -35,8 +36,9 @@ void Player::causeDamage(float domage)
 		domage -= protection;
 		protection = 0;
 		synchronizeHealth();
-		//changeHealth(-domage);
 		health -= domage;
+		if (health <= 0)
+			die();
 	}
 	else
 		protection -= domage;
