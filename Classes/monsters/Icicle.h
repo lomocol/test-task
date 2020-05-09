@@ -10,6 +10,8 @@ public:
 	void die() override;
 	void appearance(float time) override;
 private:
+	void secondStage(float interval);
+	void thirdStage();
 	void sendNotifications();
 	void changeSize(const std::string & filename);
 };

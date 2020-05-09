@@ -11,21 +11,33 @@ Icicle::Icicle(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec
 
 void Icicle::appearance(float time)
 {
-	auto stageInterval = DelayTime::create(time / 3);
+	int interval = time / 3;
 
-	auto secondStage = CallFunc::create([this]() {
-		changeSize(ICICLE_SECOND_IMAGE);
-		sprite->getPhysicsBody()->setDynamic(false);
-		});
-	auto thirdStage = CallFunc::create([this]() {changeSize(ICICLE_THIRD_IMAGE);});
+	auto secondStageAction = CallFunc::create([this, interval]() {secondStage(interval);});
 
-	auto sequence = Sequence::create(stageInterval, secondStage, stageInterval, thirdStage, nullptr);
-	parent->runAction(sequence);
+	auto sequence = Sequence::create(DelayTime::create(interval), secondStageAction, nullptr);
+	sprite->runAction(sequence);
 }
 
 void Icicle::die()
 {
 	sendNotifications();
+}
+
+void Icicle::secondStage(float interval)
+{
+	changeSize(ICICLE_SECOND_IMAGE);
+	sprite->getPhysicsBody()->setDynamic(false);
+
+	auto thirdStageAction = CallFunc::create([this]() {thirdStage();});
+
+	auto sequence = Sequence::create(DelayTime::create(interval), thirdStageAction, nullptr);
+	sprite->runAction(sequence);
+};
+
+void Icicle::thirdStage()
+{
+	changeSize(ICICLE_THIRD_IMAGE);
 }
 
 void Icicle::sendNotifications()
