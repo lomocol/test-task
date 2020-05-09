@@ -2,7 +2,8 @@
 #include "iSpawner.h"
 #include "../monsters/bonus.h"
 
-#include <array>
+#include <vector>
+#include <map>
 
 class BonusSpawner : public iSpawner
 {
@@ -19,7 +20,7 @@ private:
 	void spawn(BonusType type,const cocos2d::Vec2  position);
 	void spawn() {};
 private:
-
+	std::map<BonusType, const std::string> typeFileNames;
 	const std::vector<BonusType> spiderBonus = { BonusType::Health,BonusType::Protection};
 	const std::vector<BonusType>  icicleBonus = { BonusType::Block,BonusType::FireBall,BonusType::Shield };
 };

@@ -30,14 +30,14 @@ void ImageManager::addTexture(const std::string& filename, cocos2d::Size size)
 
 ImageManager::ImageManager()
 {
-	addTexture("player.png",PLAYER_SIZE);
-	addTexture("player_dead.png",PLAYER_SIZE);
+	addTexture(PLAYER_IMAGE,PLAYER_SIZE);
+	addTexture(PLAYER_DEAD_IMAGE,PLAYER_SIZE);
 
-	addTexture("bonus/health.png",BONUS_SIZE);
-	addTexture("bonus/protection.png",BONUS_SIZE);
-	addTexture("bonus/fireball.png",BONUS_SIZE);
-	addTexture("bonus/block.png",BONUS_SIZE);
-	addTexture("bonus/shield.png",BONUS_SIZE);
+	addTexture(HEALTH_IMAGE,BONUS_SIZE);
+	addTexture(PROTECTION_IMAGE,BONUS_SIZE);
+	addTexture(FIREBALL_IMAGE,BONUS_SIZE);
+	addTexture(BLOCK_IMAGE,BONUS_SIZE);
+	addTexture(SHIELD_IMAGE,BONUS_SIZE);
 }
 
 ImageManager::~ImageManager()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "settings.h"
+#include "definitions.h"
 #include "cocos2d.h"
 #include <map>
 

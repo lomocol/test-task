@@ -13,8 +13,15 @@
 #define SPIDER_DEAD_IMAGE "spider_dead.png"
 #define FRAGMENT_IMAGE "fragment.png"
 
+// bonus file names
+#define BLOCK_IMAGE "bonus/block.png"
+#define SHIELD_IMAGE "bonus/shield.png"
+#define FIREBALL_IMAGE "bonus/fireball.png"
+#define HEALTH_IMAGE "bonus/health.png"
+#define PROTECTION_IMAGE "bonus/protection.png"
+
 #define FOOTER_IMAGE "footer.jpg"
-#define BACKGROUND_IMAGE "background2.jpg"
+#define BACKGROUND_IMAGE "background.jpg"
 #define CEILING_IMAGE "ceiling.png"
 #define HEADER_IMAGE "header.jpg"
 

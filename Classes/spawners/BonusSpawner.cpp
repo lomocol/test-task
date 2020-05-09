@@ -6,6 +6,12 @@ using namespace cocos2d;
 BonusSpawner::BonusSpawner(cocos2d::Node* _parent, int maxMonsterCount) :
 	iSpawner(_parent, maxMonsterCount)
 {
+	typeFileNames.insert(std::pair<BonusType, const string>(BonusType::Block, BLOCK_IMAGE));
+	typeFileNames.insert(std::pair<BonusType, const string>(BonusType::Shield, SHIELD_IMAGE));
+	typeFileNames.insert(std::pair<BonusType, const string>(BonusType::FireBall, FIREBALL_IMAGE));
+	typeFileNames.insert(std::pair<BonusType, const string>(BonusType::Health, HEALTH_IMAGE));
+	typeFileNames.insert(std::pair<BonusType, const string>(BonusType::Protection, PROTECTION_IMAGE));
+
 	addListeners();
 }
 
@@ -76,7 +82,7 @@ void BonusSpawner::spawn(BonusType type, const cocos2d::Vec2 position)
 	{
 		BodyInfo bodyInfo = BONUS_BODY_INFO;
 		bodyInfo.tag += spriteNumber;
-		Bonus* bonus = new Bonus(BONUS_SIZE, parent, position, bodyInfo, type);
+		Bonus* bonus = new Bonus(typeFileNames[type], parent, position, bodyInfo, type);
 		monsters[spriteNumber] = bonus;
 	}
 	else
