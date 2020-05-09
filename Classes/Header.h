@@ -9,8 +9,9 @@ public:
 	Header(cocos2d::Node* _parent);
 	void changeHealth(float newHealth);
 	void changeProtection(float newProtection);
-
+	~Header() { background->removeFromParent(); };
 private:
+	cocos2d::Sprite* background;
 	cocos2d::Size headerSize;
 	void createBars();
 	void setBackground();

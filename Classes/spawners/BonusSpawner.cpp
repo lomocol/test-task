@@ -74,7 +74,9 @@ void BonusSpawner::spawn(BonusType type, const cocos2d::Vec2 position)
 
 	if (spriteNumber != -1)
 	{
-		Bonus* bonus = new Bonus(BONUS_SIZE, parent, position, BONUS_BODY_INFO, type);
+		BodyInfo bodyInfo = BONUS_BODY_INFO;
+		bodyInfo.tag += spriteNumber;
+		Bonus* bonus = new Bonus(BONUS_SIZE, parent, position, bodyInfo, type);
 		monsters[spriteNumber] = bonus;
 	}
 	else

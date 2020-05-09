@@ -49,10 +49,10 @@ void Header::createBars()
 
 void Header::setBackground()
 {
-	auto sprite = Sprite::create();
-	sprite->setTextureRect(Rect(0, 0, headerSize.width, headerSize.height));
-	sprite->setColor(Color3B::YELLOW);
-	sprite->setAnchorPoint(Point(0, 0));
-	sprite->setPosition(0, 0);
-	parent->addChild(sprite);
+	ImageManager::instance().addTexture(HEADER_IMAGE, headerSize);
+	auto texture = ImageManager::instance().getTexture(HEADER_IMAGE);
+	background = Sprite::createWithTexture(texture);
+	background->setAnchorPoint(Point(0, 0));
+	background->setPosition(0, 0);
+	parent->addChild(background);
 }

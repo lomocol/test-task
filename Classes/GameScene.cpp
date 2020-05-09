@@ -60,9 +60,13 @@ void GameScene::createHeader()
 void GameScene::createGameSurface()
 {
 	Size edgeSize(visibleSize.width, visibleSize.height - HEADER_HEIGHT);
-	Size ceilingSize(visibleSize.width, 30);
-	Size footerSize(visibleSize.width, 30);
+	Size ceilingSize(visibleSize.width, CEILING_HEIGHT);
+	Size footerSize(visibleSize.width, FOOTER_HEIGHT);
 	Size arenaSize(edgeSize.width, edgeSize.height - ceilingSize.height - footerSize.height);
+
+	ImageManager::instance().addTexture(BACKGROUND_IMAGE, arenaSize);
+	ImageManager::instance().addTexture(FOOTER_IMAGE, footerSize);
+	ImageManager::instance().addTexture(CEILING_IMAGE, ceilingSize);
 
 	// Create edgeBox
 	auto edgeNode = Node::create();
@@ -72,9 +76,8 @@ void GameScene::createGameSurface()
 	edgeNode->setPhysicsBody(edgeBody);
 
 	// Create ceiling
-	auto ceiling = Sprite::create();
-	ceiling->setTextureRect(Rect(Vec2(0, 0), ceilingSize));
-	ceiling->setColor(Color3B::GRAY);
+	auto ceilingTexture = ImageManager::instance().getTexture(CEILING_IMAGE);
+	auto ceiling = Sprite::createWithTexture(ceilingTexture);
 	ceiling->setPosition(0, edgeSize.height / 2 - ceilingSize.height / 2);
 	auto ceilingBody = PhysicsBody::createEdgeBox(ceilingSize, PhysicsMaterial(0, 1, 0), 1);
 	setBodyInfo(ceilingBody, CEILING_BODY_INFO);
@@ -82,9 +85,8 @@ void GameScene::createGameSurface()
 	ceiling->setPhysicsBody(ceilingBody);
 
 	// Create footer
-	auto footer = Sprite::create();
-	footer->setTextureRect(Rect(Vec2(0, 0), footerSize));
-	footer->setColor(Color3B::GREEN);
+	auto footerTexture = ImageManager::instance().getTexture(FOOTER_IMAGE);
+	auto footer = Sprite::createWithTexture(footerTexture);
 	footer->setPosition(0, -(edgeSize.height / 2 - footerSize.height / 2));
 	auto footergBody = PhysicsBody::createEdgeBox(footerSize, PHYSICSBODY_MATERIAL_DEFAULT, 1);
 	setBodyInfo(footergBody, FOOTER_BODY_INFO);
@@ -98,9 +100,8 @@ void GameScene::createGameSurface()
 	arena->setPosition(-(edgeSize.width / 2), footerSize.height - edgeSize.height / 2);
 
 	// Create background
-	auto background = Sprite::create();
-	background->setTextureRect(Rect(Vec2(0, 0), arenaSize));
-	background->setColor(Color3B::YELLOW);
+	auto backgroundTexture = ImageManager::instance().getTexture(BACKGROUND_IMAGE);
+	auto background = Sprite::createWithTexture(backgroundTexture);
 	background->setAnchorPoint({ 0,0 });
 	background->setPosition({ 0,0 });
 
@@ -185,13 +186,18 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 		IS_SPIDER(oneTag) ? contactWithSpider(oneTag, twoTag) : contactWithSpider(twoTag, oneTag);
 		return true;
 	}
+	if (IS_BONUS(oneTag) || IS_BONUS(twoTag))
+	{
+		IS_BONUS(oneTag) ? contactWithBonus(oneTag, twoTag) : contactWithBonus(twoTag, oneTag);
+		return true;
+	}
 	return true;
 }
 
 void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contactorBody)
 {
 	
-	if (IS_ICICLE(contactorTag))
+ 	if (IS_ICICLE(contactorTag))
 	{
 		float verticalVelosity = -contactorBody->getVelocity().y;
 
@@ -234,6 +240,11 @@ void GameScene::contactWithIcicle(int icicleTag, int contactorTag)
 	{
 		icicleSpawner->causeDamage(icicleTag - ICICLE_TAG, ICICLE_HEALTH);
 	}
+	if (IS_BONUS(contactorTag))
+	{
+		icicleSpawner->causeDamage(icicleTag - ICICLE_TAG, ICICLE_HEALTH);
+		bonusSpawner->removeBonus(contactorTag - BONUS_TAG);
+	}
 }
 
 void GameScene::contactWithSpider(int spiderTag, int contactorTag)
@@ -270,4 +281,15 @@ void GameScene::contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int cont
 	{
 		shotSpawner->removeShot(contactorTag - SHOT_TAG);
 	}
+}
+
+void GameScene::contactWithBonus(int bonusTag, int contactorTag)
+{
+
+	if (contactorTag == CEILING_TAG || contactorTag == EDGE_TAG)
+	{
+		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
+		return;
+	}
+	
 }

@@ -5,14 +5,23 @@
 
 #define PLAYER_IMAGE "player.png"
 #define ICICLE_IMAGE "icicle.png"
-#define ICICLE_SECOND_IMAGE "icicle2.png"
-#define ICICLE_THIRD_IMAGE "icicle3.png"
+#define ICICLE_SECOND_IMAGE "icicle.png"
+#define ICICLE_THIRD_IMAGE "icicle.png"
 #define SPIDER_IMAGE "spider.png"
 #define SPIDER_DEAD_IMAGE "spider_dead.png"
 #define FRAGMENT_IMAGE "fragment.png"
 
+#define FOOTER_IMAGE "footer.jpg"
+#define BACKGROUND_IMAGE "background2.jpg"
+#define CEILING_IMAGE "ceiling.png"
+#define HEADER_IMAGE "header.jpg"
+
 #define NORMAL_GRAVITY Vec2(0,-500)
-#define HEADER_HEIGHT 150
+#define HEADER_HEIGHT 120
+
+
+#define CEILING_HEIGHT 45
+#define FOOTER_HEIGHT 30
 
 
 #define ICICLE_SPAWN_INTERVAL 1.0
