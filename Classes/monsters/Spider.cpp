@@ -72,10 +72,15 @@ void Spider::sendNotifications()
 		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 	}
 	{
+		EventCustom event("spider_drop_bonus_event");
+		Vec2* position = new Vec2(sprite->getPosition());
+		event.setUserData(position);
+		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+	}
+	{
 		EventCustom event("spider_die_event");
 		int* num = new int(tag - SPIDER_TAG);
 		event.setUserData(num);
 		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 	}
-	
 }

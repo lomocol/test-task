@@ -6,6 +6,7 @@ iSpawner::iSpawner(cocos2d::Node* _parent, int _maxMonsterCount, ColumnManager* 
 columnManager(_columnManager) , maxMonsterCount(_maxMonsterCount)
 {
 	monsters.assign(maxMonsterCount,nullptr);
+
 	spawner = Sprite::create();
 	parent->addChild(spawner);
 	spawnYPosition = parent->getContentSize().height;

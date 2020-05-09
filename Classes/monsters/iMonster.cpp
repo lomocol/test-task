@@ -48,3 +48,8 @@ void iMonster::causeDamage(int damage)
 	if (health <= 0)
 		die();
 }
+
+iMonster::~iMonster()
+{
+	sprite->removeFromParent();
+}

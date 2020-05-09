@@ -45,14 +45,20 @@ void ShotSpawner::spawn()
 
 void ShotSpawner::removeShot(int shotTag)
 {
-
+	auto shot = monsters[shotTag];
+	if (shot != nullptr)
+	{
+		shot->die();
+		delete shot;
+		monsters[shotTag] = nullptr;
+	}
 }
 
 void ShotSpawner::addListeners()
 {
-	auto dieListener = EventListenerCustom::create("shot_die_event", [=](EventCustom* event) {
+	auto dieShotListener = EventListenerCustom::create("shot_die_event", [=](EventCustom* event) {
 		CCLOG("SHOT EVENT CAUGHT in SPAWNER!!!");
 		});
-	parent->getEventDispatcher()->addEventListenerWithSceneGraphPriority(dieListener, parent);
+	parent->getEventDispatcher()->addEventListenerWithSceneGraphPriority(dieShotListener, parent);
 }
 

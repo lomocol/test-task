@@ -3,7 +3,7 @@
 #include "cocos2d.h"
 #include "definitions.h"
 #include "settings.h"
-
+#include "effect.h"
 
 
 class iMonster
@@ -16,6 +16,7 @@ public:
 	// otherwise return false
 	virtual void causeDamage(int damage);
 	virtual void appearance(float time) = 0;
+	~iMonster();
 protected:
 	cocos2d::Node* parent;
 	cocos2d::Sprite* sprite;

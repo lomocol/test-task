@@ -114,6 +114,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
       <Outputs>$(TargetName).cab</Outputs>
       <Inputs>$(TargetFileName)</Inputs>
     </CustomBuildStep>
+    <ClCompile>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpplatest</LanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -129,6 +132,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4267;4251;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libcurl.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END)</AdditionalDependencies>
@@ -151,12 +155,45 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\ColumnManager.cpp" />
+    <ClCompile Include="..\Classes\effect.cpp" />
+    <ClCompile Include="..\Classes\GameScene.cpp" />
+    <ClCompile Include="..\Classes\Header.cpp" />
+    <ClCompile Include="..\Classes\ImageManager.cpp" />
+    <ClCompile Include="..\Classes\monsters\Bonus.cpp" />
+    <ClCompile Include="..\Classes\monsters\Icicle.cpp" />
+    <ClCompile Include="..\Classes\monsters\iMonster.cpp" />
+    <ClCompile Include="..\Classes\monsters\Player.cpp" />
+    <ClCompile Include="..\Classes\monsters\Shot.cpp" />
+    <ClCompile Include="..\Classes\monsters\Spider.cpp" />
+    <ClCompile Include="..\Classes\spawners\BonusSpawner.cpp" />
+    <ClCompile Include="..\Classes\spawners\icicleSpawner.cpp" />
+    <ClCompile Include="..\Classes\spawners\iSpawner.cpp" />
+    <ClCompile Include="..\Classes\spawners\ShotSpawner.cpp" />
+    <ClCompile Include="..\Classes\spawners\SpiderSpawner.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\ColumnManager.h" />
+    <ClInclude Include="..\Classes\definitions.h" />
+    <ClInclude Include="..\Classes\effect.h" />
+    <ClInclude Include="..\Classes\GameScene.h" />
+    <ClInclude Include="..\Classes\Header.h" />
+    <ClInclude Include="..\Classes\ImageManager.h" />
+    <ClInclude Include="..\Classes\monsters\Bonus.h" />
+    <ClInclude Include="..\Classes\monsters\Icicle.h" />
+    <ClInclude Include="..\Classes\monsters\iMonster.h" />
+    <ClInclude Include="..\Classes\monsters\Player.h" />
+    <ClInclude Include="..\Classes\monsters\Shot.h" />
+    <ClInclude Include="..\Classes\monsters\Spider.h" />
+    <ClInclude Include="..\Classes\settings.h" />
+    <ClInclude Include="..\Classes\spawners\BonusSpawner.h" />
+    <ClInclude Include="..\Classes\spawners\icicleSpawner.h" />
+    <ClInclude Include="..\Classes\spawners\iSpawner.h" />
+    <ClInclude Include="..\Classes\spawners\ShotSpawner.h" />
+    <ClInclude Include="..\Classes\spawners\SpiderSpawner.h" />
+    <ClInclude Include="..\Classes\supportingFunctional.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

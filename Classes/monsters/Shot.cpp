@@ -34,8 +34,6 @@ void Shot::die()
 		, nullptr);
 
 	emitter->runAction(emitterRemovingSequence);
-
-	sprite->removeFromParent();
 }
 
 void Shot::appearance(float time)

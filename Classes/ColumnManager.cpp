@@ -21,9 +21,13 @@ ColumnManager::~ColumnManager()
 
 void ColumnManager::adjustImagesToColumnNumber(int columnNubmer)
 {
-	ImageManager::instance().addTexture(ICICLE_IMAGE, Size(columnWidth - ICICLE_PADDING, 30));
-	ImageManager::instance().addTexture(ICICLE_SECOND_IMAGE, Size(columnWidth - ICICLE_PADDING, 45));
-	ImageManager::instance().addTexture(ICICLE_THIRD_IMAGE, Size(columnWidth - ICICLE_PADDING, 55));
+	const Size oneThirdSize = Size((columnWidth - ICICLE_PADDING)/3, (columnWidth - ICICLE_PADDING) / 3);
+	const Size twoThirdSize = Size(oneThirdSize.width * 2, oneThirdSize.height * 2);
+	const Size threeThirdSize = Size(oneThirdSize.width * 3, oneThirdSize.height * 3);
+
+	ImageManager::instance().addTexture(ICICLE_IMAGE, oneThirdSize);
+	ImageManager::instance().addTexture(ICICLE_SECOND_IMAGE, twoThirdSize);
+	ImageManager::instance().addTexture(ICICLE_THIRD_IMAGE, threeThirdSize);
 
 	ImageManager::instance().addTexture(SPIDER_IMAGE, Size(columnWidth - SPIDER_PADDING, columnWidth - SPIDER_PADDING));
 	ImageManager::instance().addTexture(SPIDER_DEAD_IMAGE, Size(columnWidth - SPIDER_PADDING, columnWidth - SPIDER_PADDING));
@@ -65,23 +69,12 @@ void ColumnManager::releaseColumnAfter(int columnNumber, float time)
 
 void ColumnManager::addListeners()
 {
-	auto _listener = EventListenerCustom::create("icicle_die_event", [=](EventCustom* event) {
-		
-			
+	auto _listener2 = EventListenerCustom::create("release_column_event", [=](EventCustom* event) {
 
-		return true;
-		});
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_listener, releaser);
-
-	auto _listener2 = EventListenerCustom::create("spider_die_event", [=](EventCustom* event) {
-
-		char* buf = static_cast<char*>(event->getUserData());
-		std::string str;
-		str += buf;
-		int x = stoi(str);
+		int* column = static_cast<int*>(event->getUserData());
+		releaseColumn(*column);
+		delete column;
 		return true;
 		});
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_listener2, releaser);
-
-	
 }

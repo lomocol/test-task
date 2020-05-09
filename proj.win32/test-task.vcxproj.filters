@@ -10,6 +10,12 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\spawners">
+      <UniqueIdentifier>{d7b06f53-b37a-4b16-9cf6-d53e3e604b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\monsters">
+      <UniqueIdentifier>{4b3070df-f9ac-4ae9-a35b-0e1bbf7268af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -18,7 +24,52 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+    <ClCompile Include="..\Classes\ColumnManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Header.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ImageManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\monsters\Icicle.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\monsters\iMonster.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\monsters\Player.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\monsters\Shot.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\monsters\Spider.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spawners\icicleSpawner.cpp">
+      <Filter>src\spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spawners\iSpawner.cpp">
+      <Filter>src\spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spawners\ShotSpawner.cpp">
+      <Filter>src\spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spawners\SpiderSpawner.cpp">
+      <Filter>src\spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\monsters\Bonus.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spawners\BonusSpawner.cpp">
+      <Filter>src\spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\effect.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +80,61 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
+    <ClInclude Include="..\Classes\ColumnManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\definitions.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Header.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ImageManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\settings.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\supportingFunctional.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\Icicle.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\iMonster.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\Player.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\Shot.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\Spider.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spawners\icicleSpawner.h">
+      <Filter>src\spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spawners\iSpawner.h">
+      <Filter>src\spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spawners\ShotSpawner.h">
+      <Filter>src\spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spawners\SpiderSpawner.h">
+      <Filter>src\spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\Bonus.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spawners\BonusSpawner.h">
+      <Filter>src\spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\effect.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,6 +4,7 @@
 #include "settings.h"
 #include "ColumnManager.h"
 #include "../monsters/iMonster.h"
+#include "effect.h"
 #include <vector>
 class iSpawner
 {
