@@ -28,4 +28,10 @@
 
 #define DAMAGE_FROM_ICICLE 1.5
 #define DAMAGE_FROM_SHOT 1
+#define DAMAGE_FROM_SPIDER 20
+#define DAMAGE_FROM_FRAGMENT 40
+
+#define BONUS_SIZE Size(25,25)
+#define BONUS_MAX_COUNT 4
+#define BONUS_CHANCE 30		// BONUS_CHANCE out of 100 that will drop a bonus
 

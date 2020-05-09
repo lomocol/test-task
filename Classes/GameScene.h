@@ -4,6 +4,7 @@
 #include "definitions.h"
 #include "Header.h"
 #include "monsters/Player.h"
+#include "spawners/BonusSpawner.h"
 #include "spawners/icicleSpawner.h"
 #include "spawners/spiderSpawner.h"
 
@@ -32,9 +33,11 @@ private:
 	void contactWithIcicle(int icicleTag, int contactorTag);
 	void contactWithSpider(int spiderTag, int contactorTag);
 	void contactWithShot(int shotTag, int contactorTag);
+	void contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;
+	BonusSpawner* bonusSpawner;
 	ShotSpawner* shotSpawner;
 	ColumnManager* columnManager;
 	Header* header;

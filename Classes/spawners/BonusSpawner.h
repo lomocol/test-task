@@ -9,7 +9,7 @@ class BonusSpawner : public iSpawner
 
 public:
 	BonusSpawner(cocos2d::Node* _parent, int maxMonsterCount);
-	
+	void removeBonus(int bonusTag);
 private:
 	virtual void addListeners();
 	BonusType randomBonusType(const std::vector<BonusType> & types);

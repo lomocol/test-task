@@ -80,3 +80,15 @@ void BonusSpawner::spawn(BonusType type, const cocos2d::Vec2 position)
 	else
 		EffectMaker::instance().dropDefaultEfffect(parent, position, EffectType::Space, ICICLE_DIE_EFFECT_DURATION);
 }
+
+
+void BonusSpawner::removeBonus(int bonusTag)
+{
+	auto bonus = monsters[bonusTag];
+	if (bonus != nullptr)
+	{
+		bonus->die();
+		delete bonus;
+		monsters[bonusTag] = nullptr;
+	}
+}
