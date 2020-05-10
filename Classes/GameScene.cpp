@@ -226,7 +226,9 @@ void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contac
 	if (IS_FRAGMENT(contactorTag))
 	{
 		player->causeDamage(DAMAGE_FROM_FRAGMENT * PLAYER_DAMAGE_COEFFICIENT);
-		contactorBody->getOwner()->removeFromParent();
+		auto owner = contactorBody->getOwner();
+		if(owner != nullptr)
+			owner->removeFromParent();
 		return;
 	}
 	if (IS_BONUS(contactorTag))

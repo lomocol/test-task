@@ -25,12 +25,6 @@ void EffectMaker::dropDefaultEfffect(cocos2d::Node* parent, cocos2d::Vec2 positi
 	emitter->setDuration(duration);
 	parent->addChild(emitter);
 
-	/*auto emitterRemovingSequence = Sequence::create(DelayTime::create(duration),
-		CallFunc::create([emitter]() {emitter->removeFromParent();})
-		, nullptr);
-
-	emitter->runAction(emitterRemovingSequence);*/
-
 	auto removeFunc = CallFunc::create([emitter]() {emitter->removeFromParent();});
 	auto delay = DelayTime::create(duration);
 	auto removeSequence = Sequence::create(delay, removeFunc,nullptr);
@@ -39,20 +33,23 @@ void EffectMaker::dropDefaultEfffect(cocos2d::Node* parent, cocos2d::Vec2 positi
 
 void EffectMaker::dropFragments(cocos2d::Node* parent, cocos2d::Vec2 position)
 {
-
+	auto horizontalDevition = BONUS_SIZE.width / 2;
 	// LEFT
 	{
-		auto sprite = createFragment(parent, position);
+		Vec2 leftPosition(position.x - horizontalDevition,position.y);
+		auto sprite = createFragment(parent, leftPosition);
 		sprite->getPhysicsBody()->applyImpulse(FRAGMENT_LEFT);
 	}
 	// UP
 	{
-		auto sprite = createFragment(parent, position);
+		Vec2 upPosition(position.x, position.y + BONUS_SIZE.height);
+		auto sprite = createFragment(parent, upPosition);
 		sprite->getPhysicsBody()->applyImpulse(FRAGMENT_UP);
 	}
 	// RIGHT
 	{
-		auto sprite = createFragment(parent,position);
+		Vec2 rightPosition(position.x + horizontalDevition, position.y);
+		auto sprite = createFragment(parent, rightPosition);
 		sprite->getPhysicsBody()->applyImpulse(FRAGMENT_RIGHT);
 	}
 }
@@ -61,13 +58,13 @@ cocos2d::Sprite* EffectMaker::createFragment(cocos2d::Node* parent, cocos2d::Vec
 {
 	auto texture = ImageManager::instance().getTexture(FRAGMENT_IMAGE);
 	auto sprite = Sprite::createWithTexture(texture);
-	sprite->setPosition(position);
+	//sprite->setPosition(position);
 
 	auto spriteBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PhysicsMaterial(0, 1, 0));
 	setBodyInfo(spriteBody, FRAGMENT_BODY_INFO);
 
 	sprite->setPhysicsBody(spriteBody);
-	parent->addChild(sprite);
-
+	sprite->setAnchorPoint({0.5,0});
+	DynamicCreator::instance().addCreationOrder({ sprite,position,parent });
 	return sprite;
 }

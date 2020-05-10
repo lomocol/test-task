@@ -113,9 +113,9 @@
 #define FRAGMENT_TAG_TO 1450
 #define FRAGMENT_BODY_INFO BodyInfo{FRAGMENT_CATEGORY, FRAGMENT_COLLISION_MASK, FRAGMENT_TEST, FRAGMENT_TAG}
 #define FRAGMENT_SIZE Size(10,10)	
-#define FRAGMENT_LEFT cocos2d::Vec2(-15,10)	// fragment momentum
-#define FRAGMENT_RIGHT cocos2d::Vec2(15,10)
-#define FRAGMENT_UP cocos2d::Vec2(5,20)
+#define FRAGMENT_LEFT cocos2d::Vec2(-88,150)	// fragment momentum
+#define FRAGMENT_RIGHT cocos2d::Vec2(88,150)
+#define FRAGMENT_UP cocos2d::Vec2(30,170)
 #define IS_FRAGMENT(tag) Range{FRAGMENT_TAG,FRAGMENT_TAG_TO}.contains(tag)
 // Bonus
 #define BONUS_COLLISION_MASK 1

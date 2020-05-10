@@ -44,7 +44,8 @@ void Icicle::sendNotifications()
 {
 	{
 		EventCustom event("icicle_drop_bonus_event");
-		Vec2* position = new Vec2(sprite->getPosition());
+		auto topPosition = sprite->getPosition();	// sprite position with anchorPoint(0.5,1)
+		Vec2* position = new Vec2(topPosition.x, topPosition.y - sprite->getContentSize().height); // sprite position with anchorPoint(0.5,0)
 		event.setUserData(position);
 		Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
 	}
