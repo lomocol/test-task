@@ -4,8 +4,8 @@ using namespace std;
 using namespace cocos2d;
 
 
-SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount) :
-	iSpawner(_parent, maxMonsterCount, columnManager)
+SpiderSpawner::SpiderSpawner(cocos2d::Node* _parent, ColumnManager* columnManager, int maxMonsterCount, const cocos2d::Sprite* player) :
+	iSpawner(_parent, maxMonsterCount, columnManager),player(player)
 {
 	 spawnInterval = SPIDER_SPAWN_INTERVAL;
 	 appearanceTime = SPIDER_APPEARANCE_TIME;
@@ -36,7 +36,7 @@ void SpiderSpawner::spawn()
 			Vec2 position(freeColumn.centerPosition, spawnYPosition);
 			BodyInfo bodyInfo = SPIDER_BODY_INFO;
 			bodyInfo.tag += spriteNumber;
-			Spider* spider = new Spider(SPIDER_IMAGE, parent, position, bodyInfo, columnNum);
+			Spider* spider = new Spider(SPIDER_IMAGE, parent, position, bodyInfo, columnNum,player);
 
 			spider->appearance(appearanceTime);
 

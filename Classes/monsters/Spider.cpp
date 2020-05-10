@@ -4,8 +4,9 @@ using namespace std;
 using namespace cocos2d;
 using namespace ui;
 
-Spider::Spider(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo & bodyInfo, int columnNum) :
-	iMonster(filename,_parent, position, bodyInfo),columnNum(columnNum)
+Spider::Spider(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec2 position,
+	const BodyInfo& bodyInfo, int columnNum, const cocos2d::Sprite* player) :
+	iMonster(filename, _parent, position, bodyInfo), columnNum(columnNum), player(player)
 {
 	health = SPIDER_HEALTH;
 	dead = false;
@@ -18,7 +19,7 @@ void Spider::die()
 		return;
 
 	auto texture = ImageManager::instance().getTexture("spider_dead.png");
-	if(texture != nullptr)
+	if (texture != nullptr)
 		sprite->setTexture(texture);
 
 	auto pos = sprite->getPosition();
@@ -30,23 +31,32 @@ void Spider::die()
 	dead = true;
 }
 
-void Spider::appearance(float time)
+void Spider::runWeb(float webLenght)
 {
-	int webLenght = rand() % (SPIDER_WEB_LENGHT_MAX - SPIDER_WEB_LENGHT_MIN) + SPIDER_WEB_LENGHT_MIN;
-
 	web = LoadingBar::create("bar.png");
 
 	web->setScale(webLenght / web->getContentSize().width, SPIDER_WEB_WIDTH_SCALE);
 	web->setDirection(LoadingBar::Direction::LEFT);
-	web->setAnchorPoint(Point(0,0.5));
+	web->setAnchorPoint(Point(0, 0.5));
 	web->setRotation(90.0);
 	web->setPosition(sprite->getPosition());
 
 	parent->addChild(web);
 	web->runAction(ProgressTo::create(SPIDER_APPEARANCE_TIME, 100));
+}
 
-	auto spiderMoveDown = MoveBy::create(SPIDER_APPEARANCE_TIME,Vec2(0,-webLenght));
-	sprite->runAction(spiderMoveDown);
+void Spider::appearance(float time)
+{
+	int webLenght = rand() % (SPIDER_WEB_LENGHT_MAX - SPIDER_WEB_LENGHT_MIN) + SPIDER_WEB_LENGHT_MIN;
+	runWeb(webLenght);
+
+	auto moveDown = MoveBy::create(SPIDER_APPEARANCE_TIME, Vec2(0, -webLenght));
+	sprite->runAction(moveDown);
+
+	auto delay = DelayTime::create(SPIDER_SHOT_INTERVAL);
+	auto startShot = CallFunc::create([this]() {shot();});
+	auto shotSequence = Sequence::create(delay, startShot, nullptr);
+	sprite->runAction(shotSequence);
 
 }
 
@@ -55,13 +65,45 @@ void Spider::causeDamage(int damage)
 	if (dead)
 	{
 		sendNotifications();
-		//sprite->removeFromParent();
 	}
 	else
 		iMonster::causeDamage(damage);
 }
 
+//
+//CCLOG(std::to_string(player->getPosition().x).c_str());
+//CCLOG(std::to_string(player->getPosition().y).c_str());
+//CCLOG("-");
+void Spider::shot()
+{
+	// create shot sprite
+	auto shotSprite = Sprite::create();
+	shotSprite->setTextureRect(Rect(Vec2::ZERO, SPIDER_SHOT_SIZE));
 
+	auto spriteBody = PhysicsBody::createCircle(SPIDER_SHOT_SIZE.width / 2);
+	spriteBody->setDynamic(true);
+	setBodyInfo(spriteBody, SPIDER_SHOT_BODY_INFO);
+	shotSprite->setPhysicsBody(spriteBody);
+
+	// calculation of the direction and the power of a shot
+	Vec2 shotPosition{ sprite->getPosition().x ,sprite->getPosition().y - sprite->getContentSize().height };
+	auto playerPosition = player->getPosition();
+	Vec2 impulseVector{ (playerPosition.x - shotPosition.x) * SPIDER_SHOT_POWER, (playerPosition.y - shotPosition.y) * SPIDER_SHOT_POWER };
+
+	// add sprite to arena in the next frame
+	DynamicCreator::instance().addCreationOrder({ shotSprite ,shotPosition, parent });
+
+	// emit added shot in the next frame
+	parent->scheduleOnce([impulseVector, spriteBody](float delta) {
+		spriteBody->applyImpulse(impulseVector);
+		}, 0.0, "spiderShot");
+
+	// run shot again after SPIDER_SHOT_INTERVAL time
+	auto nextShot = CallFunc::create([this]() {shot();});
+	auto delay = DelayTime::create(SPIDER_SHOT_INTERVAL);
+	auto shotSequence = Sequence::create(delay, nextShot, nullptr);
+	sprite->runAction(shotSequence);
+}
 
 void Spider::sendNotifications()
 {

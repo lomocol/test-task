@@ -146,7 +146,7 @@ void GameScene::initManagers()
 	columnManager = new ColumnManager(arena, COLUMN_COUNT);
 
 	icicleSpawner = new IcicleSpawner(arena, columnManager, MAX_ICICLE_COUNT_FROM);
-	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_SPIDER_COUNT_FROM);
+	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_SPIDER_COUNT_FROM,player->getSprite());
 	shotSpawner = new ShotSpawner(arena, player->getSprite(), MAX_SHOT_COUNT_FROM);
 	bonusSpawner = new BonusSpawner(arena, BONUS_MAX_COUNT);
 	player->setShotSpiwner(shotSpawner);
