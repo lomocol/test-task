@@ -2,6 +2,7 @@
 
 #include "ImageManager.h"
 #include "supportingFunctional.h"
+#include "dynamicCreator.h"
 
 #define PLAYER_IMAGE "player.png"
 #define PLAYER_DEAD_IMAGE "player_dead.png"

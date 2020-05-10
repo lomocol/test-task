@@ -18,7 +18,7 @@ BonusSpawner::BonusSpawner(cocos2d::Node* _parent, int maxMonsterCount) :
 
 void BonusSpawner::dropSpiderBonus(const cocos2d::Vec2& position)
 {
-	BonusType type = randomBonusType(icicleBonus);
+	BonusType type = randomBonusType(spiderBonus);
 	if (type == BonusType::Empty) {
 		EffectMaker::instance().dropDefaultEfffect(parent, position, EffectType::Fire, ICICLE_DIE_EFFECT_DURATION);
 	}

@@ -18,6 +18,7 @@ public:
 
 	CREATE_FUNC(GameScene);
 
+	void update(float dt);
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
 private:
 	void setPhysicsWorld(cocos2d::PhysicsWorld* _world) noexcept { world = _world; };

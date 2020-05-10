@@ -16,8 +16,9 @@ private:
 	BonusType randomBonusType(const std::vector<BonusType> & types);
 	void dropSpiderBonus(const cocos2d::Vec2 & position);
 	void dropIcicleBonus(const cocos2d::Vec2 & position);
+	void spawn(BonusType type, const cocos2d::Vec2  position);
+
 	void startSpawn() {};
-	void spawn(BonusType type,const cocos2d::Vec2  position);
 	void spawn() {};
 private:
 	std::map<BonusType, const std::string> typeFileNames;

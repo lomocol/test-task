@@ -41,6 +41,7 @@ bool GameScene::init()
 	addListeners();
 
 
+	this->scheduleUpdate();
 
 	return true;
 }
@@ -151,6 +152,11 @@ void GameScene::initManagers()
 	player->setShotSpiwner(shotSpawner);
 }
 
+
+void GameScene::update(float dt)
+{
+	DynamicCreator::instance().createSprites();
+}
 
 bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 {
