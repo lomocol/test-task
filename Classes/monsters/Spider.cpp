@@ -70,15 +70,12 @@ void Spider::causeDamage(int damage)
 		iMonster::causeDamage(damage);
 }
 
-//
-//CCLOG(std::to_string(player->getPosition().x).c_str());
-//CCLOG(std::to_string(player->getPosition().y).c_str());
-//CCLOG("-");
 void Spider::shot()
 {
 	// create shot sprite
 	auto shotSprite = Sprite::create();
 	shotSprite->setTextureRect(Rect(Vec2::ZERO, SPIDER_SHOT_SIZE));
+	shotSprite->setAnchorPoint(Point(0.5,1));
 
 	auto spriteBody = PhysicsBody::createCircle(SPIDER_SHOT_SIZE.width / 2);
 	spriteBody->setDynamic(true);
