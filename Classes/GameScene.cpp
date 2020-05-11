@@ -183,8 +183,8 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 	}
 	if (IS_SHOT(oneTag) || IS_SHOT(twoTag))
 	{
-		IS_SHOT(oneTag) ? contactWithShot(oneTag, twoTag) : contactWithShot(twoTag, oneTag);
-		return false;
+		return IS_SHOT(oneTag) ? contactWithShot(oneTag, twoTag) : contactWithShot(twoTag, oneTag);
+		 
 	}
 	if (IS_SPIDER_SHOT(oneTag) || IS_BONUS(twoTag))
 	{
@@ -277,21 +277,25 @@ void GameScene::contactWithSpider(int spiderTag, int contactorTag)
 	}
 }
 
-void GameScene::contactWithShot(int shotTag, int contactorTag)
+bool GameScene::contactWithShot(int shotTag, int contactorTag)
 {
 	if (IS_SPIDER(contactorTag)) {
 		spiderSpawner->causeDamage(contactorTag - SPIDER_TAG, DAMAGE_FROM_SHOT * 50);
 		shotSpawner->removeShot(shotTag - SHOT_TAG);
-		return;
+		return false;
 	}
 	if (IS_ICICLE(contactorTag)) {
 
 		icicleSpawner->causeDamage(contactorTag - ICICLE_TAG, DAMAGE_FROM_SHOT * 150);
 		shotSpawner->removeShot(shotTag - SHOT_TAG);
-		return;
+		return false;
 	}
 	if (contactorTag == CEILING_TAG || contactorTag == FOOTER_TAG)
+	{
 		shotSpawner->removeShot(shotTag - SHOT_TAG);
+		return false;
+	}
+	return true;
 }
 
 void GameScene::contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int contactorTag)

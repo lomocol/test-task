@@ -67,7 +67,7 @@
 // Mass
 #define PLAYER_MASS 190
 #define ICICLE_MASS 1000
-#define FRAGMENT_MASS 300
+#define FRAGMENT_MASS 1
 #define BONUS_MASS 100
 // Ceinilg
 #define CEILING_COLLISION_MASK 2
