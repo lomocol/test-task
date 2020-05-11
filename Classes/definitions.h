@@ -25,9 +25,13 @@
 #define BACKGROUND_IMAGE "background.jpg"
 #define CEILING_IMAGE "ceiling.png"
 #define HEADER_IMAGE "header.jpg"
+#define BAR_IMAGE "bar.png"
 
 #define NORMAL_GRAVITY Vec2(0,-333)
 #define HEADER_HEIGHT 120
+#define BAR_NODE_SIZE_PERCENT 0.45f
+#define BAR_WIDTH_PERCENT 0.90f
+#define BAR_HEIGHT_PERCENT 0.30f
 
 
 #define CEILING_HEIGHT 45

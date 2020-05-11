@@ -9,13 +9,16 @@ public:
 	Header(cocos2d::Node* _parent);
 	void changeHealth(float newHealth);
 	void changeProtection(float newProtection);
-	~Header() { background->removeFromParent(); };
+	~Header() ;
+private:
+	void createBars();
+	void setBackground();
 private:
 	cocos2d::Sprite* background;
 	cocos2d::Size headerSize;
-	void createBars();
-	void setBackground();
 	cocos2d::Node* parent;
+	cocos2d::Node* buttonNode;
+	cocos2d::Node* barNode;
 	cocos2d::ui::LoadingBar* healthBar;
 	cocos2d::ui::LoadingBar* protectionBar;
 };
