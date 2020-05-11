@@ -172,6 +172,10 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 		oneTag == PLAYER_TAG ? contactWithPlayer(twoTag, twoBody) : contactWithPlayer(oneTag, oneBody);
 		return true;
 	}
+	if (IS_BONUS(oneTag) || IS_BONUS(twoTag))
+	{
+		IS_BONUS(oneTag) ? contactWithBonus(oneTag, twoTag) : contactWithBonus(twoTag, oneTag);
+	}
 	if (IS_FRAGMENT(oneTag) || IS_FRAGMENT(twoTag))
 	{
 		IS_FRAGMENT(oneTag) ? contactWithFragment(oneBody, twoTag) : contactWithFragment(twoBody, oneTag);
@@ -180,7 +184,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 	if (IS_SHOT(oneTag) || IS_SHOT(twoTag))
 	{
 		IS_SHOT(oneTag) ? contactWithShot(oneTag, twoTag) : contactWithShot(twoTag, oneTag);
-		return true;
+		return false;
 	}
 	if (IS_SPIDER_SHOT(oneTag) || IS_BONUS(twoTag))
 	{
@@ -197,11 +201,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 		IS_SPIDER(oneTag) ? contactWithSpider(oneTag, twoTag) : contactWithSpider(twoTag, oneTag);
 		return true;
 	}
-	if (IS_BONUS(oneTag) || IS_BONUS(twoTag))
-	{
-		IS_BONUS(oneTag) ? contactWithBonus(oneTag, twoTag) : contactWithBonus(twoTag, oneTag);
-		return true;
-	}
+	
 
 	return true;
 }
@@ -212,7 +212,7 @@ void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contac
 	if (IS_ICICLE(contactorTag))
 	{
 		float verticalVelosity = -contactorBody->getVelocity().y;
-
+		CCLOG("ICICLE !!!");
 		player->causeDamage(verticalVelosity * DAMAGE_FROM_ICICLE * PLAYER_DAMAGE_COEFFICIENT);
 		contactWithIcicle(contactorTag, PLAYER_TAG);
 		return;
@@ -307,13 +307,19 @@ void GameScene::contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int cont
 
 void GameScene::contactWithBonus(int bonusTag, int contactorTag)
 {
-
+	if (IS_ICICLE(contactorTag))
+	{
+		icicleSpawner->causeDamage(contactorTag - ICICLE_TAG, ICICLE_HEALTH);
+		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
+		return;
+	}
 	if (contactorTag == CEILING_TAG || contactorTag == EDGE_TAG)
 	{
 		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
 		return;
 	}
 
+	
 }
 
 void GameScene::contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag)

@@ -83,7 +83,7 @@ void Spider::shot()
 	shotSprite->setPhysicsBody(spriteBody);
 
 	// calculation of the direction and the power of a shot
-	Vec2 shotPosition{ sprite->getPosition().x ,sprite->getPosition().y - sprite->getContentSize().height };
+	Vec2 shotPosition{ sprite->getPosition().x ,sprite->getPosition().y - sprite->getContentSize().height - 5 };
 	auto playerPosition = player->getPosition();
 	Vec2 impulseVector{ (playerPosition.x - shotPosition.x) * SPIDER_SHOT_POWER, (playerPosition.y - shotPosition.y) * SPIDER_SHOT_POWER };
 

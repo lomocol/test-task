@@ -61,6 +61,7 @@ cocos2d::Sprite* EffectMaker::createFragment(cocos2d::Node* parent, cocos2d::Vec
 	//sprite->setPosition(position);
 
 	auto spriteBody = PhysicsBody::createCircle(sprite->getContentSize().width / 2, PhysicsMaterial(0, 1, 0));
+	spriteBody->setMass(FRAGMENT_MASS);
 	setBodyInfo(spriteBody, FRAGMENT_BODY_INFO);
 
 	sprite->setPhysicsBody(spriteBody);

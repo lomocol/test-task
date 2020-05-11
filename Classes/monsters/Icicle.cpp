@@ -7,6 +7,7 @@ Icicle::Icicle(const std::string& filename, cocos2d::Node* _parent, cocos2d::Vec
 	iMonster(filename, _parent, position, bodyInfo)
 {
 	health = ICICLE_HEALTH;
+	sprite->getPhysicsBody()->setMass(ICICLE_MASS);
 }
 
 void Icicle::appearance(float time)

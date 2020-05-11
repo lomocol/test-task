@@ -15,7 +15,7 @@ Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _hea
 	sprite->setAnchorPoint(Point(0.5, 0));
 	sprite->setPosition(position);
 	sprite->getPhysicsBody()->setDynamic(true);
-
+	sprite->getPhysicsBody()->setMass(PLAYER_MASS);
 	addListeners();
 }
 
@@ -50,22 +50,22 @@ void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
 {
 	if (keyCode == EventKeyboard::KeyCode::KEY_W)
 	{
-		sprite->getPhysicsBody()->applyImpulse(Vec2(0, 20));
+		sprite->getPhysicsBody()->applyImpulse(Vec2(0, 50000));
 	}
 	else
 		if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
-			sprite->getPhysicsBody()->applyImpulse(Vec2(-50, 0));
+			sprite->getPhysicsBody()->applyImpulse(Vec2(-13000, 0));
 		}
 		else
 			if (keyCode == EventKeyboard::KeyCode::KEY_D)
 			{
-				sprite->getPhysicsBody()->applyImpulse(Vec2(50, 0));
+				sprite->getPhysicsBody()->applyImpulse(Vec2(13000, 0));
 			}
 			else
 				if (keyCode == EventKeyboard::KeyCode::KEY_S)
 				{
-					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -20));
+					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -2000));
 				}
 				else
 					if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)

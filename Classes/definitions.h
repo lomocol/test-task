@@ -26,7 +26,7 @@
 #define CEILING_IMAGE "ceiling.png"
 #define HEADER_IMAGE "header.jpg"
 
-#define NORMAL_GRAVITY Vec2(0,-500)
+#define NORMAL_GRAVITY Vec2(0,-333)
 #define HEADER_HEIGHT 120
 
 
@@ -60,7 +60,11 @@
 #define SPIDER_WEB_LENGHT_MIN 50
 #define SPIDER_WEB_LENGHT_MAX 250
 #define SPIDER_WEB_WIDTH_SCALE 0.33
-
+// Mass
+#define PLAYER_MASS 190
+#define ICICLE_MASS 1000
+#define FRAGMENT_MASS 300
+#define BONUS_MASS 100
 // Ceinilg
 #define CEILING_COLLISION_MASK 2
 #define CEILING_CATEGORY 1
