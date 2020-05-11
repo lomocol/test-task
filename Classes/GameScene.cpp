@@ -146,7 +146,7 @@ void GameScene::initManagers()
 	columnManager = new ColumnManager(arena, COLUMN_COUNT);
 
 	icicleSpawner = new IcicleSpawner(arena, columnManager, MAX_ICICLE_COUNT_FROM);
-	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_SPIDER_COUNT_FROM,player->getSprite());
+	spiderSpawner = new SpiderSpawner(arena, columnManager, MAX_SPIDER_COUNT_FROM, player->getSprite());
 	shotSpawner = new ShotSpawner(arena, player->getSprite(), MAX_SHOT_COUNT_FROM);
 	bonusSpawner = new BonusSpawner(arena, BONUS_MAX_COUNT);
 	player->setShotSpiwner(shotSpawner);
@@ -182,6 +182,11 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 		IS_SHOT(oneTag) ? contactWithShot(oneTag, twoTag) : contactWithShot(twoTag, oneTag);
 		return true;
 	}
+	if (IS_SPIDER_SHOT(oneTag) || IS_BONUS(twoTag))
+	{
+		IS_SPIDER_SHOT(oneTag) ? contactWithSpiderShot(oneBody, twoTag) : contactWithSpiderShot(twoBody, oneTag);
+		return true;
+	}
 	if (IS_ICICLE(oneTag) || IS_ICICLE(twoTag))
 	{
 		IS_ICICLE(oneTag) ? contactWithIcicle(oneTag, twoTag) : contactWithIcicle(twoTag, oneTag);
@@ -197,13 +202,14 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 		IS_BONUS(oneTag) ? contactWithBonus(oneTag, twoTag) : contactWithBonus(twoTag, oneTag);
 		return true;
 	}
+
 	return true;
 }
 
 void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contactorBody)
 {
-	
- 	if (IS_ICICLE(contactorTag))
+
+	if (IS_ICICLE(contactorTag))
 	{
 		float verticalVelosity = -contactorBody->getVelocity().y;
 
@@ -217,6 +223,14 @@ void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contac
 		shotSpawner->removeShot(contactorTag - SHOT_TAG);
 		return;
 	}
+	if (IS_SPIDER_SHOT(contactorTag))
+	{
+		player->causeDamage(DAMAGE_FROM_SPIDER_SHOT * PLAYER_DAMAGE_COEFFICIENT);
+		auto shotSprite = contactorBody->getOwner();
+		if (shotSprite != nullptr)
+			shotSprite->removeFromParent();
+		return;
+	}
 	if (IS_SPIDER(contactorTag))
 	{
 		player->causeDamage(DAMAGE_FROM_SPIDER * PLAYER_DAMAGE_COEFFICIENT);
@@ -227,7 +241,7 @@ void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contac
 	{
 		player->causeDamage(DAMAGE_FROM_FRAGMENT * PLAYER_DAMAGE_COEFFICIENT);
 		auto owner = contactorBody->getOwner();
-		if(owner != nullptr)
+		if (owner != nullptr)
 			owner->removeFromParent();
 		return;
 	}
@@ -299,5 +313,33 @@ void GameScene::contactWithBonus(int bonusTag, int contactorTag)
 		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
 		return;
 	}
-	
+
+}
+
+void GameScene::contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag)
+{
+	if (IS_SPIDER(contactorTag))
+	{
+		spiderSpawner->causeDamage(contactorTag - SPIDER_TAG, DAMAGE_FROM_SPIDER_SHOT);
+		auto spiderShotSprite = spiderShotBody->getOwner();
+		if (spiderShotSprite != nullptr)
+			spiderShotSprite->removeFromParent();
+		return;
+	}
+	if (IS_ICICLE(contactorTag))
+	{
+		icicleSpawner->causeDamage(contactorTag - ICICLE_TAG, DAMAGE_FROM_SPIDER_SHOT * 3);
+		auto spiderShotSprite = spiderShotBody->getOwner();
+		if (spiderShotSprite != nullptr)
+			spiderShotSprite->removeFromParent();
+		return;
+	}
+	if (contactorTag != CEILING_TAG || contactorTag != EDGE_TAG)
+	{
+		auto spiderShotSprite = spiderShotBody->getOwner();
+		if (spiderShotSprite != nullptr)
+			spiderShotSprite->removeFromParent();
+		return;
+	}
+
 }

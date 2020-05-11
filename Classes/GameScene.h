@@ -36,6 +36,7 @@ private:
 	void contactWithShot(int shotTag, int contactorTag);
 	void contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int contactorTag);
 	void contactWithBonus(int bonusTag, int contactorTag);
+	void contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;
