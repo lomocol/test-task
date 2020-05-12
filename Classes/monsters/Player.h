@@ -8,6 +8,9 @@
 #include "bonus.h"
 #include <map>
 
+const std::string shieldImageFileName = "skills/circle.png";
+static float shieldTime = 10.0f;
+
 class Player : public iMonster
 {
 public:
@@ -29,6 +32,9 @@ private:
 	void createFireball();
 	void createBlock();
 	void createShield();
+
+	bool underSheild;
+	cocos2d::Sprite* shield;
 private:
 	std::map<BonusType, int>skillCount;
 	Header* header;

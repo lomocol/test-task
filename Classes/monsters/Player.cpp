@@ -8,15 +8,18 @@ Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _hea
 {
 	health = 100;
 	protection = 100;
+	underSheild = false;
 
 	synchronizeHealth();
 	synchronizeProtection();
 
-	sprite->setAnchorPoint(Point(0.5, 0));
+	sprite->setAnchorPoint(Point(0.5, 0.5));
 	sprite->setPosition(position);
 	sprite->getPhysicsBody()->setDynamic(true);
 	sprite->getPhysicsBody()->setMass(PLAYER_MASS);
 	addListeners();
+
+	ImageManager::instance().addTexture(shieldImageFileName, sprite->getContentSize() * 6);
 }
 
 void Player::die()
@@ -48,20 +51,29 @@ void Player::causeDamage(float domage)
 
 void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-		if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		{
-			sprite->getPhysicsBody()->applyImpulse(Vec2(-13000, 0));
-		}
-		else
-			if (keyCode == EventKeyboard::KeyCode::KEY_D)
-			{
-				sprite->getPhysicsBody()->applyImpulse(Vec2(13000, 0));
-			}
-				else
-					if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-					{
-						shot();
-					}
+	switch (keyCode)
+	{
+	case EventKeyboard::KeyCode::KEY_A:
+		sprite->getPhysicsBody()->applyImpulse(Vec2(-13000, 0));
+		break;
+	case EventKeyboard::KeyCode::KEY_D:
+		sprite->getPhysicsBody()->applyImpulse(Vec2(13000, 0));
+		break;
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		shot();
+		break;
+	case EventKeyboard::KeyCode::KEY_1:
+		createShield();
+		break;
+	case EventKeyboard::KeyCode::KEY_2:
+		createFireball();
+		break;
+	case EventKeyboard::KeyCode::KEY_3:
+		createBlock();
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::activateBonus(BonusType type)
@@ -83,7 +95,7 @@ void Player::activateBonus(BonusType type)
 		header->changeSkillButton(type, skillCount[type]);
 		break;
 	}
-	
+
 }
 
 void Player::shot()
@@ -110,7 +122,7 @@ void Player::synchronizeProtection()
 
 void Player::synchronizeSkill(BonusType type)
 {
-	header->changeSkillButton(type,skillCount[type]);
+	header->changeSkillButton(type, skillCount[type]);
 }
 
 void Player::createFireball()
@@ -123,4 +135,42 @@ void Player::createBlock()
 
 void Player::createShield()
 {
+	if (skillCount[BonusType::Shield] == 0)
+		return;
+
+	header->changeSkillButton(BonusType::Shield, --skillCount[BonusType::Shield]);
+
+	if (!underSheild)
+	{
+		// create a four-point shield 
+		shield = Sprite::createWithTexture(ImageManager::instance().getTexture(shieldImageFileName));
+		auto playerSize = sprite->getContentSize();
+		const Vec2 vecs[] = {
+			{-playerSize.width * 2,-playerSize.height},
+			{-playerSize.width,playerSize.height * 2},
+			{playerSize.width,playerSize.height * 2},
+			{playerSize.width * 2,-playerSize.height}
+		};
+		auto shieldBody = PhysicsBody::createEdgePolygon(vecs, 4);
+		setBodyInfo(shieldBody, SHIELD_BODY_INFO);
+		shieldBody->setDynamic(false);
+		shield->setPhysicsBody(shieldBody);
+		shield->setPosition(playerSize.width / 2, playerSize.height / 2);
+
+		sprite->addChild(shield);
+		// remove shield after shieldTime
+		auto removeShield = CallFunc::create([&]() {shield->removeFromParent(); underSheild = false;});
+		auto delay = DelayTime::create(shieldTime);
+		shield->runAction(Sequence::create(delay, removeShield, nullptr));
+
+		underSheild = true;
+	}
+	else
+	{
+		// restart shield timer 
+		shield->stopAllActions();
+		auto removeShield = CallFunc::create([&]() {shield->removeFromParent(); underSheild = false;});
+		auto delay = DelayTime::create(shieldTime);
+		shield->runAction(Sequence::create(delay, removeShield, nullptr));
+	}
 }

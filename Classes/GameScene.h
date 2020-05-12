@@ -33,9 +33,9 @@ private:
 	void contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contactorBody);
 	void contactWithIcicle(int icicleTag, int contactorTag);
 	void contactWithSpider(int spiderTag, int contactorTag);
-	void contactWithShot(int shotTag, int contactorTag);
+	bool contactWithShot(int shotTag, int contactorTag);
 	void contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int contactorTag);
-	void contactWithBonus(int bonusTag, int contactorTag);
+	bool contactWithBonus(int bonusTag, int contactorTag);
 	void contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
@@ -49,8 +49,6 @@ private:
 	cocos2d::Size visibleSize;
 	cocos2d::Vec2 origin;
 	cocos2d::Node* arena;
-
-
 };
 
 

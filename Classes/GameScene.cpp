@@ -108,7 +108,7 @@ void GameScene::createGameSurface()
 
 	arena->addChild(background);
 	edgeNode->addChild(ceiling);
-	edgeNode->addChild(footer);
+	edgeNode->addChild(footer,2);
 	edgeNode->addChild(arena);
 
 	this->addChild(edgeNode);
@@ -119,7 +119,7 @@ void GameScene::createPlayer()
 {
 	ImageManager::instance().addTexture(PLAYER_IMAGE, PLAYER_SIZE);
 
-	Vec2 position(visibleSize.width / 2, visibleSize.height / 2);
+	Vec2 position(visibleSize.width / 2, FOOTER_HEIGHT);
 
 	player = new Player(PLAYER_IMAGE, arena, header, position, PLAYER_BODY_INFO);
 }
@@ -174,7 +174,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 	}
 	if (IS_BONUS(oneTag) || IS_BONUS(twoTag))
 	{
-		IS_BONUS(oneTag) ? contactWithBonus(oneTag, twoTag) : contactWithBonus(twoTag, oneTag);
+		return IS_BONUS(oneTag) ? contactWithBonus(oneTag, twoTag) : contactWithBonus(twoTag, oneTag);
 	}
 	if (IS_FRAGMENT(oneTag) || IS_FRAGMENT(twoTag))
 	{
@@ -247,6 +247,9 @@ void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contac
 	}
 	if (IS_BONUS(contactorTag))
 	{
+		auto bonus = contactorBody->getOwner();
+		if(bonus != nullptr)
+			player->activateBonus(*static_cast<BonusType*>(bonus->getUserData()));
 		bonusSpawner->removeBonus(contactorTag - BONUS_TAG);
 		return;
 	}
@@ -254,7 +257,7 @@ void GameScene::contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contac
 
 void GameScene::contactWithIcicle(int icicleTag, int contactorTag)
 {
-	if (contactorTag == FOOTER_TAG)
+	if (contactorTag == FOOTER_TAG || contactorTag == SHIELD_TAG)
 	{
 		icicleSpawner->causeDamage(icicleTag - ICICLE_TAG, ICICLE_HEALTH);
 	}
@@ -295,6 +298,8 @@ bool GameScene::contactWithShot(int shotTag, int contactorTag)
 		shotSpawner->removeShot(shotTag - SHOT_TAG);
 		return false;
 	}
+	if (contactorTag == SHIELD_TAG)
+		return false;
 	return true;
 }
 
@@ -309,21 +314,29 @@ void GameScene::contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int cont
 	}
 }
 
-void GameScene::contactWithBonus(int bonusTag, int contactorTag)
+bool GameScene::contactWithBonus(int bonusTag, int contactorTag)
 {
 	if (IS_ICICLE(contactorTag))
 	{
 		icicleSpawner->causeDamage(contactorTag - ICICLE_TAG, ICICLE_HEALTH);
 		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
-		return;
+		return true;
+	}
+	if (IS_SHOT(contactorTag))
+	{
+		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
+		return false;
 	}
 	if (contactorTag == CEILING_TAG || contactorTag == EDGE_TAG)
 	{
 		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
-		return;
+		return true;
 	}
-
-	
+	if(contactorTag == SHIELD_TAG)
+	{
+		return false;
+	}
+	return true;
 }
 
 void GameScene::contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag)
