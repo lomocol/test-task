@@ -20,7 +20,9 @@ void BlockSpawner::spawn(cocos2d::Vec2 position)
 	if (spriteNumber != -1)
 	{
 		auto texture = ImageManager::instance().getTexture(blockFileName);
-		Block* block = new Block(texture,parent,position,BLOCK_BODY_INFO);
+		auto bodyInfo = BLOCK_BODY_INFO;
+		bodyInfo.tag += spriteNumber;
+		Block* block = new Block(texture,parent,position, bodyInfo);
 
 		monsters[spriteNumber] = block;
 	}
