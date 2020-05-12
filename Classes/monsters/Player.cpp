@@ -21,7 +21,7 @@ Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _hea
 	synchronizeHealth();
 	synchronizeProtection();
 
-	sprite->setAnchorPoint(Point(0.5, 0.5));
+	sprite->setAnchorPoint(Point(0.5, 0));
 	sprite->setPosition(position);
 	sprite->getPhysicsBody()->setDynamic(true);
 	sprite->getPhysicsBody()->setMass(PLAYER_MASS);

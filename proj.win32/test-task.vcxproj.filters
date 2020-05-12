@@ -72,6 +72,15 @@
     <ClCompile Include="..\Classes\effect.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\monsters\Block.cpp">
+      <Filter>src\monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spawners\BlockSpawner.cpp">
+      <Filter>src\spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DynamicCreator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -135,6 +144,15 @@
       <Filter>src\spawners</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\effect.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\monsters\Block.h">
+      <Filter>src\monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spawners\BlockSpawner.h">
+      <Filter>src\spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DynamicCreator.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
