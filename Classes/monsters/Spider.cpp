@@ -79,6 +79,7 @@ void Spider::shot()
 
 	auto spriteBody = PhysicsBody::createCircle(SPIDER_SHOT_SIZE.width / 2);
 	spriteBody->setDynamic(true);
+	//spriteBody->set
 	setBodyInfo(spriteBody, SPIDER_SHOT_BODY_INFO);
 	shotSprite->setPhysicsBody(spriteBody);
 
@@ -90,10 +91,7 @@ void Spider::shot()
 	// add sprite to arena in the next frame
 	DynamicCreator::instance().addCreationOrder({ shotSprite ,shotPosition, parent });
 
-	// emit added shot in the next frame
-	parent->scheduleOnce([impulseVector, spriteBody](float delta) {
-		spriteBody->applyImpulse(impulseVector);
-		}, 0.0, "spiderShot");
+	spriteBody->applyImpulse(impulseVector);
 
 	// run shot again after SPIDER_SHOT_INTERVAL time
 	auto nextShot = CallFunc::create([this]() {shot();});
