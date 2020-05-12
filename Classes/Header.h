@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "definitions.h"
 #include "ui/CocosGUI.h"
+#include "monsters/bonus.h"
 
 const static float buttonWidthPercent = 0.2f;
 const static float buttonHeightPercent = 0.5f;
@@ -18,12 +19,14 @@ public:
 	Header(cocos2d::Node* _parent);
 	void changeHealth(float newHealth);
 	void changeProtection(float newProtection);
+	void changeSkillButton(BonusType type,int count);
 	~Header() ;
 private:
 	void createBars();
 	void createButtons();
+	void createLabels();
 	void setBackground();
-	void addButton(cocos2d::ui::Button*  button,const std::string & normalImageFileName,
+	void addButton(BonusType type,const std::string & normalImageFileName,
 		const std::string& unavailableImageFileName,const cocos2d::Vec2 position, const cocos2d::Size buttonSize);
 private:
 	cocos2d::Sprite* background;
@@ -34,8 +37,7 @@ private:
 	cocos2d::ui::LoadingBar* healthBar;
 	cocos2d::ui::LoadingBar* protectionBar;
 
-	cocos2d::ui::Button* fireBallButton;
-	cocos2d::ui::Button* shieldButton;
-	cocos2d::ui::Button* blockButton;
+	std::map<BonusType, cocos2d::ui::Button*>buttons;
+	std::map<BonusType, cocos2d::Label*>labels;
 };
 

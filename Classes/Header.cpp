@@ -23,12 +23,13 @@ Header::Header(cocos2d::Node* _parent)
 	buttonNode = Node::create();
 	buttonNode->setAnchorPoint(Point(0, 0));
 	buttonNode->setContentSize(buttonNodeSize);
-	buttonNode->setPosition(Point(barNodeSize.width,0));
-	parent->addChild(buttonNode,2);
+	buttonNode->setPosition(Point(barNodeSize.width, 0));
+	parent->addChild(buttonNode, 2);
 
 	setBackground();
 	createBars();
 	createButtons();
+	createLabels();
 }
 
 void Header::changeHealth(float newHealth)
@@ -40,6 +41,22 @@ void Header::changeProtection(float newProtection)
 {
 	protectionBar->runAction(ProgressTo::create(0.5f, newProtection));
 }
+
+void Header::changeSkillButton(BonusType type, int count)
+{
+	Button* button = buttons[type];
+	Label* label = labels[type];
+
+	label->setString(to_string(count));
+	if (count > 0)
+	{
+		if (!button->isEnabled())
+			button->setEnabled(true);
+	}
+	else
+		button->setEnabled(false);
+}
+
 
 Header::~Header()
 {
@@ -98,10 +115,25 @@ void Header::createButtons()
 	const Size buttonSize(buttonWidth, buttonHeight);
 
 
-	addButton(shieldButton, shieldButtonFileName, shieldButtonUnavailableFileName, firstButtonPosition, buttonSize);
-	addButton(fireBallButton, fireBallButtonFileName, fireBallButtonUnavailableFileName, secondButtonPosition, buttonSize);
-	addButton(blockButton, blockButtonFileName, blockButtonUnavailableFileName, thirdButtonPosition, buttonSize);
+	addButton(BonusType::Shield, shieldButtonFileName, shieldButtonUnavailableFileName, firstButtonPosition, buttonSize);
+	addButton(BonusType::FireBall, fireBallButtonFileName, fireBallButtonUnavailableFileName, secondButtonPosition, buttonSize);
+	addButton(BonusType::Block, blockButtonFileName, blockButtonUnavailableFileName, thirdButtonPosition, buttonSize);
 
+}
+
+void Header::createLabels()
+{
+	for (auto& [type, button] : buttons)
+	{
+		auto& label = labels[type];
+		
+		label = Label::createWithSystemFont("My Label Text", "Arial", 22);
+		auto buttonPosition = button->getPosition();
+		auto buttonSize = Size(button->getContentSize().width * button->getScaleX(), button->getContentSize().height* button->getScaleY());
+		label->setPosition(buttonPosition.x + buttonSize.width, buttonPosition.y + buttonSize.height / 2);
+		label->setString("0");
+		buttonNode->addChild(label);
+	}
 }
 
 void Header::setBackground()
@@ -114,14 +146,16 @@ void Header::setBackground()
 	parent->addChild(background, 1);
 }
 
-void Header::addButton(cocos2d::ui::Button* button, const std::string& normalImageFileName,
-	const std::string& unavailableImageFileName, const cocos2d::Vec2 position,const cocos2d::Size buttonSize)
+void Header::addButton(BonusType type, const std::string& normalImageFileName,
+	const std::string& unavailableImageFileName, const cocos2d::Vec2 position, const cocos2d::Size buttonSize)
 {
+	auto& button = buttons[type];
 	button = Button::create(normalImageFileName, normalImageFileName, unavailableImageFileName);
+	button->setEnabled(false);
 	Size rawButtonSize = button->getContentSize();
 	Vec2 scaleValue(buttonSize.width / rawButtonSize.width, buttonSize.height / rawButtonSize.height);
 	button->setScale(scaleValue.x, scaleValue.y);
-	button->setAnchorPoint(Point(0,0.5));
+	button->setAnchorPoint(Point(0, 0.5));
 	button->setPosition(position);
 	buttonNode->addChild(button);
 }
