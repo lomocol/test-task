@@ -3,6 +3,12 @@
 using namespace cocos2d;
 using namespace std;
 
+const std::string shieldImageFileName = "skills/circle.png";
+const std::string fireBallImageFileName = "skills/fireball.png";
+static float shieldTime = 10.0f;
+static cocos2d::Size fireBallSize = { 70,70 };
+static cocos2d::Vec2 fireBallImpulse = { 0, 550 };
+
 Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _header, cocos2d::Vec2 position, const BodyInfo& bodyInfo) :
 	iMonster(filename, _parent, position, bodyInfo), shotSpawner(nullptr), header(_header)
 {
@@ -20,6 +26,7 @@ Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _hea
 	addListeners();
 
 	ImageManager::instance().addTexture(shieldImageFileName, sprite->getContentSize() * 6);
+	ImageManager::instance().addTexture(fireBallImageFileName, fireBallSize);
 }
 
 void Player::die()
@@ -127,6 +134,24 @@ void Player::synchronizeSkill(BonusType type)
 
 void Player::createFireball()
 {
+	if (skillCount[BonusType::FireBall] == 0)
+		return;
+
+	header->changeSkillButton(BonusType::FireBall, --skillCount[BonusType::FireBall]);
+
+	auto fireSprite = Sprite::createWithTexture(ImageManager::instance().getTexture(fireBallImageFileName));
+	float fireBallRadius = fireSprite->getContentSize().width / 2;
+	auto spriteBody = PhysicsBody::createCircle(fireBallRadius, PhysicsMaterial(0,1,0));
+	setBodyInfo(spriteBody,FIREBALL_BODY_INFO);
+	fireSprite->setPhysicsBody(spriteBody);
+
+	auto firePosition = sprite->getPosition();
+	firePosition.y += sprite->getContentSize().height / 2 + fireBallRadius;
+	fireSprite->setPosition(firePosition.x, firePosition.y);
+
+	spriteBody->applyImpulse(fireBallImpulse);
+	parent->addChild(fireSprite);
+	
 }
 
 void Player::createBlock()

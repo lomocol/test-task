@@ -8,9 +8,6 @@
 #include "bonus.h"
 #include <map>
 
-const std::string shieldImageFileName = "skills/circle.png";
-static float shieldTime = 10.0f;
-
 class Player : public iMonster
 {
 public:

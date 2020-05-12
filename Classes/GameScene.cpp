@@ -166,7 +166,10 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 	auto oneTag = oneBody->getTag();
 	auto twoTag = twoBody->getTag();
 
-
+	if (oneTag == FIREBALL_TAG || twoTag == FIREBALL_TAG)
+	{
+		return oneTag == FIREBALL_TAG ? contactWithFireBall(oneBody, twoTag) : contactWithFireBall(twoBody, oneTag);
+	}
 	if (oneTag == PLAYER_TAG || twoTag == PLAYER_TAG)
 	{
 		oneTag == PLAYER_TAG ? contactWithPlayer(twoTag, twoBody) : contactWithPlayer(oneTag, oneBody);
@@ -365,4 +368,23 @@ void GameScene::contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int 
 		return;
 	}
 
+}
+
+bool GameScene::contactWithFireBall(cocos2d::PhysicsBody* spiderShotBody, int contactorTag)
+{
+	if (IS_SPIDER(contactorTag))
+	{
+		spiderSpawner->causeDamage(contactorTag - SPIDER_TAG, SPIDER_HEALTH);
+	}
+	if (IS_ICICLE(contactorTag))
+	{
+		icicleSpawner->causeDamage(contactorTag - ICICLE_TAG, ICICLE_HEALTH);
+	}
+	if (contactorTag == CEILING_TAG)
+	{
+		auto bireBall = spiderShotBody->getOwner();
+		EffectMaker::instance().dropDefaultEfffect(arena, bireBall->getPosition(), EffectType::Space);
+		bireBall->removeFromParent();
+	}
+	return false;
 }

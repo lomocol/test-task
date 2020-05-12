@@ -37,6 +37,7 @@ private:
 	void contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int contactorTag);
 	bool contactWithBonus(int bonusTag, int contactorTag);
 	void contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag);
+	bool contactWithFireBall(cocos2d::PhysicsBody* spiderShotBody, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;
