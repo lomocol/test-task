@@ -6,6 +6,7 @@
 #include "iMonster.h"
 #include "../spawners/ShotSpawner.h"
 #include "bonus.h"
+#include "../spawners/BlockSpawner.h"
 #include <map>
 
 class Player : public iMonster
@@ -30,11 +31,12 @@ private:
 	void createBlock();
 	void createShield();
 
-	bool underSheild;
-	cocos2d::Sprite* shield;
 private:
 	std::map<BonusType, int>skillCount;
 	Header* header;
 	float protection;
 	ShotSpawner* shotSpawner;
+	BlockSpawner* blockSpawner;
+	bool underSheild;
+	cocos2d::Sprite* shield;
 };

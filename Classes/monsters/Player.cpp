@@ -6,6 +6,8 @@ using namespace std;
 const std::string shieldImageFileName = "skills/circle.png";
 const std::string fireBallImageFileName = "skills/fireball.png";
 static float shieldTime = 10.0f;
+static int blockMaxCount = 3;
+static int blockDistance = 40;
 static cocos2d::Size fireBallSize = { 70,70 };
 static cocos2d::Vec2 fireBallImpulse = { 0, 550 };
 
@@ -25,6 +27,7 @@ Player::Player(const std::string& filename, cocos2d::Node* _parent, Header* _hea
 	sprite->getPhysicsBody()->setMass(PLAYER_MASS);
 	addListeners();
 
+	blockSpawner = new BlockSpawner(parent,blockMaxCount);
 	ImageManager::instance().addTexture(shieldImageFileName, sprite->getContentSize() * 6);
 	ImageManager::instance().addTexture(fireBallImageFileName, fireBallSize);
 }
@@ -156,6 +159,14 @@ void Player::createFireball()
 
 void Player::createBlock()
 {
+	if (skillCount[BonusType::Block] == 0)
+		return;
+
+	header->changeSkillButton(BonusType::Block, --skillCount[BonusType::Block]);
+
+	Vec2 blockPosition = sprite->getPosition();
+	blockPosition.y += blockDistance + sprite->getContentSize().height / 2;
+	blockSpawner->spawn(blockPosition);
 }
 
 void Player::createShield()

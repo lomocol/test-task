@@ -12,7 +12,7 @@ public:
 	BonusSpawner(cocos2d::Node* _parent, int maxMonsterCount);
 	void removeBonus(int bonusTag);
 private:
-	virtual void addListeners();
+	void addListeners();
 	BonusType randomBonusType(const std::vector<BonusType> & types);
 	void dropSpiderBonus(const cocos2d::Vec2 & position);
 	void dropIcicleBonus(const cocos2d::Vec2 & position);

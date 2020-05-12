@@ -152,6 +152,13 @@ void GameScene::initManagers()
 	player->setShotSpiwner(shotSpawner);
 }
 
+void GameScene::sendMesssage(const std::string& eventName, void* data)
+{
+	EventCustom event(eventName);
+	event.setUserData(data);
+	Director::getInstance()->getEventDispatcher()->dispatchEvent(&event);
+}
+
 
 void GameScene::update(float dt)
 {
@@ -182,6 +189,11 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact)
 	if (IS_FRAGMENT(oneTag) || IS_FRAGMENT(twoTag))
 	{
 		IS_FRAGMENT(oneTag) ? contactWithFragment(oneBody, twoTag) : contactWithFragment(twoBody, oneTag);
+		return true;
+	}
+	if (IS_BLOCK(oneTag) || IS_BLOCK(twoTag))
+	{
+		IS_BLOCK(oneTag) ? contactWithBlock(oneTag, twoTag) : contactWithBlock(twoTag, oneTag);
 		return true;
 	}
 	if (IS_SHOT(oneTag) || IS_SHOT(twoTag))
@@ -283,6 +295,28 @@ void GameScene::contactWithSpider(int spiderTag, int contactorTag)
 	}
 }
 
+void GameScene::contactWithBlock(int blockTag, int contactorTag)
+{
+	if (IS_ICICLE(contactorTag))
+	{
+		icicleSpawner->causeDamage(contactorTag - ICICLE_TAG, ICICLE_HEALTH);
+		sendMesssage("block_damage_event",new Vec2(blockTag - BLOCK_TAG, 15));
+	}
+	if (IS_SHOT(contactorTag))
+	{
+		sendMesssage("block_damage_event", new Vec2(blockTag - BLOCK_TAG, 5));
+	}
+	if (IS_SPIDER(contactorTag))
+	{
+		spiderSpawner->causeDamage(contactorTag - SPIDER_TAG, 0);
+		sendMesssage("block_damage_event", new Vec2(blockTag - BLOCK_TAG, 5));
+	}
+	if (IS_SPIDER_SHOT(contactorTag))
+	{
+		sendMesssage("block_damage_event", new Vec2(blockTag - BLOCK_TAG, 5));
+	}
+}
+
 bool GameScene::contactWithShot(int shotTag, int contactorTag)
 {
 	if (IS_SPIDER(contactorTag)) {
@@ -330,6 +364,11 @@ bool GameScene::contactWithBonus(int bonusTag, int contactorTag)
 		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
 		return false;
 	}
+	if (IS_BLOCK(contactorTag))
+	{
+		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
+			return false;
+	}
 	if (contactorTag == CEILING_TAG || contactorTag == EDGE_TAG)
 	{
 		bonusSpawner->removeBonus(bonusTag - BONUS_TAG);
@@ -370,7 +409,7 @@ void GameScene::contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int 
 
 }
 
-bool GameScene::contactWithFireBall(cocos2d::PhysicsBody* spiderShotBody, int contactorTag)
+bool GameScene::contactWithFireBall(cocos2d::PhysicsBody* fireBallShotBody, int contactorTag)
 {
 	if (IS_SPIDER(contactorTag))
 	{
@@ -382,9 +421,13 @@ bool GameScene::contactWithFireBall(cocos2d::PhysicsBody* spiderShotBody, int co
 	}
 	if (contactorTag == CEILING_TAG)
 	{
-		auto bireBall = spiderShotBody->getOwner();
-		EffectMaker::instance().dropDefaultEfffect(arena, bireBall->getPosition(), EffectType::Space);
+		auto bireBall = fireBallShotBody->getOwner();
+		EffectMaker::instance().dropDefaultEfffect(arena, bireBall->getPosition(), EffectType::Space,1.0f);
 		bireBall->removeFromParent();
+	}
+	if (IS_BLOCK(contactorTag))
+	{
+		sendMesssage("block_damage_event", new Vec2(contactorTag - BLOCK_TAG, 50));
 	}
 	return false;
 }

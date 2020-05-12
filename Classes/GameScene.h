@@ -29,15 +29,17 @@ private:
 	void startIcicleSpawn();
 	void startSpiderSpawn();
 	void initManagers();
+	void sendMesssage(const std::string & eventName, void * data);
 
 	void contactWithPlayer(int contactorTag, cocos2d::PhysicsBody* contactorBody);
 	void contactWithIcicle(int icicleTag, int contactorTag);
 	void contactWithSpider(int spiderTag, int contactorTag);
+	void contactWithBlock(int blockTag, int contactorTag);
 	bool contactWithShot(int shotTag, int contactorTag);
 	void contactWithFragment(cocos2d::PhysicsBody* fragmentBody, int contactorTag);
 	bool contactWithBonus(int bonusTag, int contactorTag);
 	void contactWithSpiderShot(cocos2d::PhysicsBody* spiderShotBody, int contactorTag);
-	bool contactWithFireBall(cocos2d::PhysicsBody* spiderShotBody, int contactorTag);
+	bool contactWithFireBall(cocos2d::PhysicsBody* fireBallShotBody, int contactorTag);
 private:
 	IcicleSpawner* icicleSpawner;
 	SpiderSpawner* spiderSpawner;
