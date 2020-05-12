@@ -5,6 +5,8 @@
 #include "Header.h"
 #include "iMonster.h"
 #include "../spawners/ShotSpawner.h"
+#include "bonus.h"
+#include <map>
 
 class Player : public iMonster
 {
@@ -16,12 +18,19 @@ public:
 	void appearance(float time) override;
 	void setShotSpiwner(ShotSpawner* _shotSpawner) { shotSpawner = _shotSpawner; };
 	const cocos2d::Sprite* getSprite() { return sprite; };
+	void activateBonus(BonusType type);
 private:
 	void shot();
 	void addListeners();
 	void synchronizeHealth();
 	void synchronizeProtection();
+	void synchronizeSkill(BonusType type);
+
+	void createFireball();
+	void createBlock();
+	void createShield();
 private:
+	std::map<BonusType, int>skillCount;
 	Header* header;
 	float protection;
 	ShotSpawner* shotSpawner;

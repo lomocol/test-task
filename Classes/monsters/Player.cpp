@@ -35,8 +35,8 @@ void Player::causeDamage(float domage)
 	{
 		domage -= protection;
 		protection = 0;
-		synchronizeHealth();
 		health -= domage;
+		synchronizeHealth();
 		if (health <= 0)
 			die();
 	}
@@ -48,11 +48,6 @@ void Player::causeDamage(float domage)
 
 void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_W)
-	{
-		sprite->getPhysicsBody()->applyImpulse(Vec2(0, 50000));
-	}
-	else
 		if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
 			sprite->getPhysicsBody()->applyImpulse(Vec2(-13000, 0));
@@ -62,16 +57,33 @@ void Player::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
 			{
 				sprite->getPhysicsBody()->applyImpulse(Vec2(13000, 0));
 			}
-			else
-				if (keyCode == EventKeyboard::KeyCode::KEY_S)
-				{
-					sprite->getPhysicsBody()->applyImpulse(Vec2(0, -2000));
-				}
 				else
 					if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
 					{
 						shot();
 					}
+}
+
+void Player::activateBonus(BonusType type)
+{
+	switch (type)
+	{
+	case BonusType::Health:
+		health = 100;
+		synchronizeHealth();
+		break;
+	case BonusType::Protection:
+		protection = 100;
+		synchronizeProtection();
+		break;
+	case BonusType::Empty:
+		break;
+	default:
+		skillCount[type] += 1;
+		header->changeSkillButton(type, skillCount[type]);
+		break;
+	}
+	
 }
 
 void Player::shot()
@@ -94,4 +106,21 @@ void Player::synchronizeHealth()
 void Player::synchronizeProtection()
 {
 	header->changeProtection(protection);
+}
+
+void Player::synchronizeSkill(BonusType type)
+{
+	header->changeSkillButton(type,skillCount[type]);
+}
+
+void Player::createFireball()
+{
+}
+
+void Player::createBlock()
+{
+}
+
+void Player::createShield()
+{
 }

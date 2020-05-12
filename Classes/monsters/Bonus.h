@@ -17,9 +17,10 @@ class Bonus : public iMonster
 
 public:
 	Bonus(const std::string & filename, cocos2d::Node* _parent, cocos2d::Vec2 position, const BodyInfo bodyInfo, BonusType _type);
-	const BonusType type;
 private:
 	 void appearance(float time) override {};
 	 void die() override {} ;
+private:
+	BonusType type;
 };
 
